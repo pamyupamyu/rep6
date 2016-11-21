@@ -5,6 +5,8 @@ import java.io.*;
  * RuleBaseSystem
  * 
  */
+
+//前向き推論
 public class RuleBaseSystem {
     static RuleBase rb;
     public static void main(String args[]){
@@ -132,7 +134,7 @@ class RuleBase {
         wm.addAssertion("my-car has several seats");
         wm.addAssertion("my-car is a wagon");
         rules = new ArrayList<Rule>();
-        loadRules(fileName);
+        loadRules(fileName); //ルールを全部読み取る
     }
 
     /**
@@ -150,10 +152,10 @@ class RuleBase {
                 ArrayList<String> antecedents = aRule.getAntecedents();
                 String consequent  = aRule.getConsequent();
                 //HashMap bindings = wm.matchingAssertions(antecedents);
-                ArrayList bindings = wm.matchingAssertions(antecedents);
+                ArrayList bindings = wm.matchingAssertions(antecedents); //変数束縛を行う
                 if(bindings != null){
                     for(int j = 0 ; j < bindings.size() ; j++){
-                        //後件をインスタンシエーション
+                        //後件をインスタンシエーション(具体化)
                         String newAssertion =
                             instantiate((String)consequent,
                                         (HashMap)bindings.get(j));
@@ -166,18 +168,49 @@ class RuleBase {
                     }
                 }
             }
-            System.out.println("Working Memory"+wm);
-        } while(newAssertionCreated);
+            System.out.println("Working Memory"+wm); //ルールを1周調べたら現状のワーキングメモリ出力
+        } while(newAssertionCreated); //ワーキングメモリに変更を行わなくなるまで繰り返す
         System.out.println("No rule produces a new assertion");
     }
 
+    //thePatternが変数のままの後件で、その変数が具体化できるなら、具体化した文に書き換える。
     private String instantiate(String thePattern, HashMap theBindings){
         String result = new String();
         StringTokenizer st = new StringTokenizer(thePattern);
         for(int i = 0 ; i < st.countTokens();){
             String tmp = st.nextToken();
+            //後件に具体化されない変数があった場合どうなる？？？？
+            /*具体例
+             * if ?xはポッケである
+             * then ?xには?zが入る
+             * 
+             * 結果
+             * 具体化されてないので?zにnullが入る
+             * 
+             * apply rule:CarRule8
+             * Success: my-car is a null
+             * ADD:my-car is a null
+             * apply rule:CarRule9
+             * apply rule:CarRule10
+             * apply rule:CarRule11
+             * apply rule:CarRule12
+             * apply rule:CarRule13
+             * apply rule:CarRule14
+             * apply rule:CarRule15
+             * 本来CarRule11を満足するはずなのにしない。
+             * 
+             * 解決
+             * CarRule8の"?x is a Honda"を"?x is a ?y"にしてみてください
+             * 
+             */
             if(var(tmp)){
-                result = result + " " + (String)theBindings.get(tmp);
+            	//追加
+            	if(!theBindings.containsKey(tmp)){
+            		result = result + " " + tmp;
+            	}else{
+            		result = result + " " + (String)theBindings.get(tmp);
+            	}
+            	//ここまで
             } else {
                 result = result + " " + tmp;
             }
@@ -202,25 +235,30 @@ class RuleBase {
                         String name = null;
                         ArrayList<String> antecedents = null;
                         String consequent = null;
-                        if("rule".equals(st.sval)){
-			    st.nextToken();
+                        if("rule".equals(st.sval)){ //ruleの行に入ったら
+                        	st.nextToken();
 //                            if(st.nextToken() == '"'){
-                                name = st.sval;
+                                name = st.sval; //rule名をnameに保存
                                 st.nextToken();
-                                if("if".equals(st.sval)){
+                                if("if".equals(st.sval)){ //ifの行に入ったら
                                     antecedents = new ArrayList<String>();
                                     st.nextToken();
-                                    while(!"then".equals(st.sval)){
-                                        antecedents.add(st.sval);
+                                    while(!"then".equals(st.sval)){ //まだthenでないなら
+                                        antecedents.add(st.sval); //antecedentsに条件を追加していく
                                         st.nextToken();
                                     }
-                                    if("then".equals(st.sval)){
+                                    if("then".equals(st.sval)){ //thenなら
                                         st.nextToken();
-                                        consequent = st.sval;
+                                        consequent = st.sval; //consequentに追加するアサーションを保存
                                     }
                                 }
-//                            } 
+//                            }
+                         //追加
+                        }else{
+                        	System.out.println("ERROR");
+                        	break;
                         }
+                        //ここまで
 			// ルールの生成
                         rules.add(new Rule(name,antecedents,consequent));
                         break;
