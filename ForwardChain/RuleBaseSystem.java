@@ -31,15 +31,15 @@ class WorkingMemory {
      * マッチするアサーションに対するバインディング情報を返す
      * （再帰的）
      *
-     * @param     前件を示す ArrayList
+     * @param     前件を示す ArrayList(変数を含む質問文)
      * @return    バインディング情報が入っている ArrayList
      */
-    public ArrayList matchingAssertions(ArrayList<String> theAntecedents){
+    public ArrayList matchingAssertions(ArrayList<String> theAntecedents,int flag){
         ArrayList bindings = new ArrayList();
-        return matchable(theAntecedents,0,bindings);
+        return matchable(theAntecedents,0,bindings,flag);
     }
 
-    private ArrayList matchable(ArrayList<String> theAntecedents,int n,ArrayList bindings){
+    private ArrayList matchable(ArrayList<String> theAntecedents,int n,ArrayList bindings,int flag){
         if(n == theAntecedents.size()){
             return bindings;
         } else if (n == 0){
@@ -49,13 +49,14 @@ class WorkingMemory {
                 if((new Matcher()).matching(
                     (String)theAntecedents.get(n),
                     (String)assertions.get(i),
-                    binding)){
+                    binding,
+                    flag)){
                     bindings.add(binding);
                     success = true;
                 }
             }
             if(success){
-                return matchable(theAntecedents, n+1, bindings);
+                return matchable(theAntecedents, n+1, bindings,flag);
             } else {
                 return null;
             }
@@ -67,14 +68,15 @@ class WorkingMemory {
                     if((new Matcher()).matching(
                         (String)theAntecedents.get(n),
                         (String)assertions.get(j),
-                        (HashMap)bindings.get(i))){
+                        (HashMap)bindings.get(i),
+                        flag)){
                         newBindings.add(bindings.get(i));
                         success = true;
                     }
                 }
             }
             if(success){
-                return matchable(theAntecedents,n+1,newBindings);
+                return matchable(theAntecedents,n+1,newBindings,flag);
             } else {
                 return null;
             }
@@ -133,6 +135,21 @@ class RuleBase {
         wm.addAssertion("my-car has several color models");
         wm.addAssertion("my-car has several seats");
         wm.addAssertion("my-car is a wagon");
+        //追加
+        try{
+			while(true){
+				System.out.println("追加するアサーションを入力してください。");
+				System.out.println("終了するならexitを入力してください。");
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				String s = br.readLine();
+				if(s.equals("exit")) break;
+				wm.addAssertion(s);
+			}
+		}catch(IOException e){
+			System.out.println("Exception :" + e);
+		}
+        //ここまで
+        
         rules = new ArrayList<Rule>();
         loadRules(fileName); //ルールを全部読み取る
     }
@@ -152,7 +169,7 @@ class RuleBase {
                 ArrayList<String> antecedents = aRule.getAntecedents();
                 String consequent  = aRule.getConsequent();
                 //HashMap bindings = wm.matchingAssertions(antecedents);
-                ArrayList bindings = wm.matchingAssertions(antecedents); //変数束縛を行う
+                ArrayList bindings = wm.matchingAssertions(antecedents,0); //変数束縛を行う
                 if(bindings != null){
                     for(int j = 0 ; j < bindings.size() ; j++){
                         //後件をインスタンシエーション(具体化)
@@ -163,6 +180,12 @@ class RuleBase {
                         if(!wm.contains(newAssertion)){
                             System.out.println("Success: "+newAssertion);
                             wm.addAssertion(newAssertion);
+                            /*追加
+                            for(int k = 0; k < bindings.size(); ++k){
+                            	System.out.println(bindings.get(k));
+                            }
+                            ここまで
+                            */
                             newAssertionCreated = true;
                         }
                     }
@@ -171,6 +194,24 @@ class RuleBase {
             System.out.println("Working Memory"+wm); //ルールを1周調べたら現状のワーキングメモリ出力
         } while(newAssertionCreated); //ワーキングメモリに変更を行わなくなるまで繰り返す
         System.out.println("No rule produces a new assertion");
+        //追加
+        ArrayList<String> Q = new ArrayList<String>();
+        
+        try{
+			while(true){
+				System.out.println("質問文を1行づつ入力してください。(例)?a is a ?b");
+				System.out.println("すべての質問文を入力したらexitを入力してください。");
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				String s = br.readLine();
+				if(s.equals("exit")) break;
+				Q.add(s);
+			}
+		}catch(IOException e){
+			System.out.println("Exception :" + e);
+		}
+        System.out.println("Query" + Q);
+        System.out.println("Answer" + wm.matchingAssertions(Q,1));
+        //ここまで
     }
 
     //thePatternが変数のままの後件で、その変数が具体化できるなら、具体化した文に書き換える。
@@ -339,12 +380,12 @@ class Matcher {
         vars = new HashMap<String,String>();
     }
 
-    public boolean matching(String string1,String string2,HashMap<String,String> bindings){
+    public boolean matching(String string1,String string2,HashMap<String,String> bindings,int flag){
         this.vars = bindings;
-        return matching(string1,string2);
+        return matching(string1,string2,flag);
     }
     
-    public boolean matching(String string1,String string2){
+    public boolean matching(String string1,String string2,int flag){
         //System.out.println(string1);
         //System.out.println(string2);
         
@@ -360,7 +401,7 @@ class Matcher {
                 
         // 定数同士
         for(int i = 0 ; i < st1.countTokens();){
-            if(!tokenMatching(st1.nextToken(),st2.nextToken())){
+            if(!tokenMatching(st1.nextToken(),st2.nextToken(),flag)){
                 // トークンが一つでもマッチングに失敗したら失敗
                 return false;
             }
@@ -370,23 +411,37 @@ class Matcher {
         return true;
     }
 
-    boolean tokenMatching(String token1,String token2){
+    boolean tokenMatching(String token1,String token2,int flag){
         //System.out.println(token1+"<->"+token2);
         if(token1.equals(token2)) return true;
-        if( var(token1) && !var(token2)) return varMatching(token1,token2);
-        if(!var(token1) &&  var(token2)) return varMatching(token2,token1);
+        if( var(token1) && !var(token2)) return varMatching(token1,token2,flag);
+        if(!var(token1) &&  var(token2)) return varMatching(token2,token1,flag);
         return false;
     }
 
-    boolean varMatching(String vartoken,String token){
+    boolean varMatching(String vartoken,String token,int flag){
         if(vars.containsKey(vartoken)){
             if(token.equals(vars.get(vartoken))){
                 return true;
             } else {
+            	//追加
+            	if(flag == 1){
+            		vars.remove(vartoken);
+            		vars.put(vartoken,token);
+            		//System.out.println(vars);
+            	}
+            	//ここまで
                 return false;
             }
         } else {
             vars.put(vartoken,token);
+            //
+            
+            /*追加
+            if(flag == 1)
+             	System.out.println(vars);
+            ここまで
+            */
         }
         return true;
     }
