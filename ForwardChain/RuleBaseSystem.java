@@ -127,18 +127,32 @@ class RuleBase {
     ArrayList<Rule> rules;
     
     RuleBase(){
-        fileName = "CarShop.data";
+    	//追加
+    	try{
+ 			System.out.println("ルールファイル名を入力してください。");
+ 			System.out.println("例:CarShop.data");
+ 			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+ 			fileName = br.readLine();
+ 		}catch(IOException e){
+ 			System.out.println("Exception :" + e);
+ 		}
+    	//ここまで
+        //fileName = "CarShop.data";
         wm = new WorkingMemory();
-        wm.addAssertion("my-car is inexpensive");
-        wm.addAssertion("my-car has a VTEC engine");
-        wm.addAssertion("my-car is stylish");
-        wm.addAssertion("my-car has several color models");
-        wm.addAssertion("my-car has several seats");
-        wm.addAssertion("my-car is a wagon");
         //追加
+        if(fileName.equals("CarShop.data")){
+        	wm.addAssertion("my-car is inexpensive");
+        	wm.addAssertion("my-car has a VTEC engine");
+        	wm.addAssertion("my-car is stylish");
+        	wm.addAssertion("my-car has several color models");
+        	wm.addAssertion("my-car has several seats");
+        	wm.addAssertion("my-car is a wagon");
+        }
+        
         try{
 			while(true){
 				System.out.println("追加するアサーションを入力してください。");
+				System.out.println("例:my-car is inexpensive");
 				System.out.println("終了するならexitを入力してください。");
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				String s = br.readLine();
@@ -199,7 +213,8 @@ class RuleBase {
         
         try{
 			while(true){
-				System.out.println("質問文を1行づつ入力してください。(例)?a is a ?b");
+				System.out.println("質問文を1行づつ入力してください。");
+				System.out.println("例:?x is a ?y");
 				System.out.println("すべての質問文を入力したらexitを入力してください。");
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				String s = br.readLine();
