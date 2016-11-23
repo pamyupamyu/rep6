@@ -4,26 +4,66 @@ import java.io.*;
 public class RuleBaseSystem {
     static RuleBase rb;
     static FileManager fm;
+    
     public static void main(String args[]){
+    	//追加
+    	String fileName = null;
+    	StringBuilder sb = new StringBuilder();
+    	int offset = 0;
+    	String query = null;
+    	//追加終了
+    	/*	
 	if(args.length != 1){
 	    System.out.println("Usage: %java RuleBaseSystem [query strings]");
 	    System.out.println("Example:");
 	    System.out.println(" \"?x is b\" and \"?x is c\" are queries");
 	    System.out.println("  %java RuleBaseSystem \"?x is b,?x is c\"");
 	} else {
+    	 */
+    	//追加
+    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    	System.out.println("ルールファイル名を入力してください");
+    	System.out.println("例:CarShop.data");
+    	try {
+    		fileName = br.readLine();
+		} catch (IOException e) {
+			System.out.println("Exception :" + e);
+		}
+		offset = fileName.indexOf(".");
+		sb.append(fileName);
+		sb.insert(offset, "Wm");
+//追加終了
 	    fm = new FileManager();
-	    ArrayList<Rule> rules = fm.loadRules("CarShop.data");
+//変更
+	    //ArrayList<Rule> rules = fm.loadRules("CarShop.data");
 	    //ArrayList rules = fm.loadRules("AnimalWorld.data");
-	    ArrayList<String> wm    = fm.loadWm("CarShopWm.data");
+	    ArrayList<Rule> rules = fm.loadRules(fileName);
+	    ArrayList<String> wm = fm.loadWm(new String(sb));
+	    //ArrayList<String> wm    = fm.loadWm("CarShopWm.data");
 	    //ArrayList wm    = fm.loadWm("AnimalWorldWm.data");
+//変更終了
+	  
+//追加
+	    System.out.println("質問文を入力してください");
+		System.out.println("例:?x is an Accord Wagon,?x is a Honda");
+		BufferedReader br2 = new BufferedReader(new InputStreamReader(System.in));
+		try{
+			query = br2.readLine();
+		}catch(IOException e){
+			System.out.println("Exception :" + e);
+		}
+//追加終了	    
 	    rb = new RuleBase(rules,wm);
-	    StringTokenizer st = new StringTokenizer(args[0],",");
+//変更	    
+	    //StringTokenizer st = new StringTokenizer(args[0],",");
+	    StringTokenizer st = new StringTokenizer(query,",");
+//変更終了	    
 	    ArrayList<String> queries = new ArrayList<String>();
 	    for(int i = 0 ; i < st.countTokens();){
 		queries.add(st.nextToken());
 	    }
 	    rb.backwardChain(queries);
-	}
+	//}
     }
 }
     
