@@ -131,6 +131,7 @@ class RuleBase {
     	try{
  			System.out.println("ルールファイル名を入力してください。");
  			System.out.println("例:CarShop.data");
+ 			System.out.print("->");
  			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
  			fileName = br.readLine();
  		}catch(IOException e){
@@ -154,6 +155,7 @@ class RuleBase {
 				System.out.println("追加するアサーションを入力してください。");
 				System.out.println("例:my-car is inexpensive");
 				System.out.println("終了するならexitを入力してください。");
+				System.out.print("->");
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				String s = br.readLine();
 				if(s.equals("exit")) break;
@@ -216,6 +218,7 @@ class RuleBase {
 				System.out.println("質問文を1行づつ入力してください。");
 				System.out.println("例:?x is a ?y");
 				System.out.println("すべての質問文を入力したらexitを入力してください。");
+				System.out.print("->");
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 				String s = br.readLine();
 				if(s.equals("exit")) break;
