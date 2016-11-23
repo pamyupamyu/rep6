@@ -8,6 +8,7 @@ public class RuleBaseSystem {
     public static void main(String args[]){
     	//追加
     	String fileName = null;
+    	File file;
     	StringBuilder sb = new StringBuilder();
     	int offset = 0;
     	String query = null;
@@ -22,18 +23,26 @@ public class RuleBaseSystem {
     	 */
     	//追加
     	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    	System.out.println("ルールファイル名を入力してください");
-    	System.out.println("例:CarShop.data");
-    	try {
-    		fileName = br.readLine();
-		} catch (IOException e) {
-			System.out.println("Exception :" + e);
-		}
+    	while(true){
+    		System.out.println("ルールファイル名を入力してください");
+    		System.out.println("例:CarShop.data");
+    		try {
+    			fileName = br.readLine();
+    			file = new File(fileName);
+    			//ファイルが存在しているかどうか
+    			if(file.exists())
+    				break;
+    		} catch (IOException e) {
+    			System.out.println("Exception :" + e);
+    		}
+    	}
+    	
 		offset = fileName.indexOf(".");
 		sb.append(fileName);
 		sb.insert(offset, "Wm");
 //追加終了
 	    fm = new FileManager();
+	    
 //変更
 	    //ArrayList<Rule> rules = fm.loadRules("CarShop.data");
 	    //ArrayList rules = fm.loadRules("AnimalWorld.data");
@@ -66,6 +75,7 @@ public class RuleBaseSystem {
 	//}
     }
 }
+
     
 class RuleBase implements Serializable{
     String fileName;
