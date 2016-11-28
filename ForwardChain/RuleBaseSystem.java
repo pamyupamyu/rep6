@@ -5,6 +5,8 @@ import java.io.*;
  * RuleBaseSystem
  * 
  */
+
+//前向き推論
 public class RuleBaseSystem {
     static RuleBase rb;
     public static void main(String args[]){
@@ -29,15 +31,16 @@ class WorkingMemory {
      * マッチするアサーションに対するバインディング情報を返す
      * （再帰的）
      *
-     * @param     前件を示す ArrayList
+     * @param     前件を示す ArrayList(変数を含む質問文)
      * @return    バインディング情報が入っている ArrayList
      */
-    public ArrayList matchingAssertions(ArrayList<String> theAntecedents){
+    //flag = 0の時は追加されるアサーションの探索、flag = 1の時は質問文への対応、
+    public ArrayList matchingAssertions(ArrayList<String> theAntecedents,int flag){
         ArrayList bindings = new ArrayList();
-        return matchable(theAntecedents,0,bindings);
+        return matchable(theAntecedents,0,bindings,flag);
     }
 
-    private ArrayList matchable(ArrayList<String> theAntecedents,int n,ArrayList bindings){
+    private ArrayList matchable(ArrayList<String> theAntecedents,int n,ArrayList bindings,int flag){
         if(n == theAntecedents.size()){
             return bindings;
         } else if (n == 0){
@@ -47,13 +50,14 @@ class WorkingMemory {
                 if((new Matcher()).matching(
                     (String)theAntecedents.get(n),
                     (String)assertions.get(i),
-                    binding)){
+                    binding,
+                    flag)){
                     bindings.add(binding);
                     success = true;
                 }
             }
             if(success){
-                return matchable(theAntecedents, n+1, bindings);
+                return matchable(theAntecedents, n+1, bindings,flag);
             } else {
                 return null;
             }
@@ -65,14 +69,15 @@ class WorkingMemory {
                     if((new Matcher()).matching(
                         (String)theAntecedents.get(n),
                         (String)assertions.get(j),
-                        (HashMap)bindings.get(i))){
+                        (HashMap)bindings.get(i),
+                        flag)){
                         newBindings.add(bindings.get(i));
                         success = true;
                     }
                 }
             }
             if(success){
-                return matchable(theAntecedents,n+1,newBindings);
+                return matchable(theAntecedents,n+1,newBindings,flag);
             } else {
                 return null;
             }
@@ -123,18 +128,73 @@ class RuleBase {
     ArrayList<Rule> rules;
     
     RuleBase(){
-        fileName = "CarShop.data";
+    	//追加
+    	try{
+    		BufferedReader br = StringRead(0); //ルールベースファイルの指定
+ 			fileName = br.readLine();
+ 		}catch(IOException e){
+ 			System.out.println("Exception :" + e);
+ 		}
+    	//ここまで
+        //fileName = "CarShop.data";
         wm = new WorkingMemory();
-        wm.addAssertion("my-car is inexpensive");
-        wm.addAssertion("my-car has a VTEC engine");
-        wm.addAssertion("my-car is stylish");
-        wm.addAssertion("my-car has several color models");
-        wm.addAssertion("my-car has several seats");
-        wm.addAssertion("my-car is a wagon");
+        //追加
+        if(fileName.equals("CarShop.data")){
+        	wm.addAssertion("my-car is inexpensive");
+        	wm.addAssertion("my-car has a VTEC engine");
+        	wm.addAssertion("my-car is stylish");
+        	wm.addAssertion("my-car has several color models");
+        	wm.addAssertion("my-car has several seats");
+        	wm.addAssertion("my-car is a wagon");
+        }
+        
+        try{
+			while(true){
+				BufferedReader br =StringRead(1); //アサーションの追加
+				String s = br.readLine();
+				if(s.equals("exit")) break;
+				wm.addAssertion(s);
+			}
+		}catch(IOException e){
+			System.out.println("Exception :" + e);
+		}
+        
         rules = new ArrayList<Rule>();
-        loadRules(fileName);
+        loadRules(fileName); //ルールを全部読み取る
     }
-
+//flag = 0ならルールファイル名入力、flag = 1ならアサーション追加、flag = 2なら質問文入力
+    public BufferedReader StringRead(int flag){
+    	BufferedReader br = null;
+    	switch(flag){
+    	case 0:
+ 			System.out.println("ルールファイル名を入力してください。");
+ 			System.out.println("例:CarShop.data");
+ 			System.out.print("->");
+ 			br = new BufferedReader(new InputStreamReader(System.in));
+    		break;
+    	case 1:
+    		System.out.println("追加するアサーションを入力してください。");
+    		System.out.println("例:my-car is inexpensive");
+    		System.out.println("終了するならexitを入力してください。");
+    		System.out.print("->");
+    		br = new BufferedReader(new InputStreamReader(System.in));
+    		break;
+    	case 2:
+			System.out.println("質問文を1行づつ入力してください。");
+			System.out.println("例:?x is a ?y");
+			System.out.println("すべての質問文を入力したらexitを入力してください。");
+			System.out.print("->");
+			br = new BufferedReader(new InputStreamReader(System.in));
+    		break;
+    	
+    	default:
+    		System.out.println("引数が定義されていません。");
+    		
+    	}
+		return br;
+    }
+    //ここまで
+    
     /**
      * 前向き推論を行うためのメソッド
      *
@@ -150,10 +210,10 @@ class RuleBase {
                 ArrayList<String> antecedents = aRule.getAntecedents();
                 String consequent  = aRule.getConsequent();
                 //HashMap bindings = wm.matchingAssertions(antecedents);
-                ArrayList bindings = wm.matchingAssertions(antecedents);
+                ArrayList bindings = wm.matchingAssertions(antecedents,0); //変数束縛を行う
                 if(bindings != null){
                     for(int j = 0 ; j < bindings.size() ; j++){
-                        //後件をインスタンシエーション
+                        //後件をインスタンシエーション(具体化)
                         String newAssertion =
                             instantiate((String)consequent,
                                         (HashMap)bindings.get(j));
@@ -161,23 +221,76 @@ class RuleBase {
                         if(!wm.contains(newAssertion)){
                             System.out.println("Success: "+newAssertion);
                             wm.addAssertion(newAssertion);
+                            /*追加
+                            for(int k = 0; k < bindings.size(); ++k){
+                            	System.out.println(bindings.get(k));
+                            }
+                            ここまで
+                            */
                             newAssertionCreated = true;
                         }
                     }
                 }
             }
-            System.out.println("Working Memory"+wm);
-        } while(newAssertionCreated);
+            System.out.println("Working Memory"+wm); //ルールを1周調べたら現状のワーキングメモリ出力
+        } while(newAssertionCreated); //ワーキングメモリに変更を行わなくなるまで繰り返す
         System.out.println("No rule produces a new assertion");
+        //追加
+        ArrayList<String> Q = new ArrayList<String>();
+        
+        try{
+			while(true){
+				BufferedReader br = StringRead(2);
+				String s = br.readLine();
+				if(s.equals("exit")) break;
+				Q.add(s);
+			}
+		}catch(IOException e){
+			System.out.println("Exception :" + e);
+		}
+        System.out.println("Query" + Q);
+        System.out.println("Answer" + wm.matchingAssertions(Q,1));
+        //ここまで
     }
 
+    //thePatternが変数のままの後件で、その変数が具体化できるなら、具体化した文に書き換える。
     private String instantiate(String thePattern, HashMap theBindings){
         String result = new String();
         StringTokenizer st = new StringTokenizer(thePattern);
         for(int i = 0 ; i < st.countTokens();){
             String tmp = st.nextToken();
+            //後件に具体化されない変数があった場合どうなる？？？？
+            /*具体例
+             * if ?xはポッケである
+             * then ?xには?zが入る
+             * 
+             * 結果
+             * 具体化されてないので?zにnullが入る
+             * 
+             * apply rule:CarRule8
+             * Success: my-car is a null
+             * ADD:my-car is a null
+             * apply rule:CarRule9
+             * apply rule:CarRule10
+             * apply rule:CarRule11
+             * apply rule:CarRule12
+             * apply rule:CarRule13
+             * apply rule:CarRule14
+             * apply rule:CarRule15
+             * 本来CarRule11を満足するはずなのにしない。
+             * 
+             * 解決
+             * CarRule8の"?x is a Honda"を"?x is a ?y"にしてみてください
+             * 
+             */
             if(var(tmp)){
-                result = result + " " + (String)theBindings.get(tmp);
+            	//追加
+            	if(!theBindings.containsKey(tmp)){
+            		result = result + " " + tmp;
+            	}else{
+            		result = result + " " + (String)theBindings.get(tmp);
+            	}
+            	//ここまで
             } else {
                 result = result + " " + tmp;
             }
@@ -202,25 +315,30 @@ class RuleBase {
                         String name = null;
                         ArrayList<String> antecedents = null;
                         String consequent = null;
-                        if("rule".equals(st.sval)){
-			    st.nextToken();
+                        if("rule".equals(st.sval)){ //ruleの行に入ったら
+                        	st.nextToken();
 //                            if(st.nextToken() == '"'){
-                                name = st.sval;
+                                name = st.sval; //rule名をnameに保存
                                 st.nextToken();
-                                if("if".equals(st.sval)){
+                                if("if".equals(st.sval)){ //ifの行に入ったら
                                     antecedents = new ArrayList<String>();
                                     st.nextToken();
-                                    while(!"then".equals(st.sval)){
-                                        antecedents.add(st.sval);
+                                    while(!"then".equals(st.sval)){ //まだthenでないなら
+                                        antecedents.add(st.sval); //antecedentsに条件を追加していく
                                         st.nextToken();
                                     }
-                                    if("then".equals(st.sval)){
+                                    if("then".equals(st.sval)){ //thenなら
                                         st.nextToken();
-                                        consequent = st.sval;
+                                        consequent = st.sval; //consequentに追加するアサーションを保存
                                     }
                                 }
-//                            } 
+//                            }
+                         //追加
+                        }else{
+                        	System.out.println("ERROR");
+                        	break;
                         }
+                        //ここまで
 			// ルールの生成
                         rules.add(new Rule(name,antecedents,consequent));
                         break;
@@ -301,12 +419,12 @@ class Matcher {
         vars = new HashMap<String,String>();
     }
 
-    public boolean matching(String string1,String string2,HashMap<String,String> bindings){
+    public boolean matching(String string1,String string2,HashMap<String,String> bindings,int flag){
         this.vars = bindings;
-        return matching(string1,string2);
+        return matching(string1,string2,flag);
     }
     
-    public boolean matching(String string1,String string2){
+    public boolean matching(String string1,String string2,int flag){
         //System.out.println(string1);
         //System.out.println(string2);
         
@@ -322,7 +440,7 @@ class Matcher {
                 
         // 定数同士
         for(int i = 0 ; i < st1.countTokens();){
-            if(!tokenMatching(st1.nextToken(),st2.nextToken())){
+            if(!tokenMatching(st1.nextToken(),st2.nextToken(),flag)){
                 // トークンが一つでもマッチングに失敗したら失敗
                 return false;
             }
@@ -332,23 +450,37 @@ class Matcher {
         return true;
     }
 
-    boolean tokenMatching(String token1,String token2){
+    boolean tokenMatching(String token1,String token2,int flag){
         //System.out.println(token1+"<->"+token2);
         if(token1.equals(token2)) return true;
-        if( var(token1) && !var(token2)) return varMatching(token1,token2);
-        if(!var(token1) &&  var(token2)) return varMatching(token2,token1);
+        if( var(token1) && !var(token2)) return varMatching(token1,token2,flag);
+        if(!var(token1) &&  var(token2)) return varMatching(token2,token1,flag);
         return false;
     }
 
-    boolean varMatching(String vartoken,String token){
+    boolean varMatching(String vartoken,String token,int flag){
         if(vars.containsKey(vartoken)){
             if(token.equals(vars.get(vartoken))){
                 return true;
             } else {
+            	//追加
+            	if(flag == 1){
+            		vars.remove(vartoken);
+            		vars.put(vartoken,token);
+            		//System.out.println(vars);
+            	}
+            	//ここまで
                 return false;
             }
         } else {
             vars.put(vartoken,token);
+            //
+            
+            /*追加
+            if(flag == 1)
+             	System.out.println(vars);
+            ここまで
+            */
         }
         return true;
     }
