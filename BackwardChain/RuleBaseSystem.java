@@ -13,7 +13,6 @@ public class RuleBaseSystem {
 	static String query = null;
 	//追加終了
     public static void main(String args[]){
-    	
     	/*	
 	if(args.length != 1){
 	    System.out.println("Usage: %java RuleBaseSystem [query strings]");
@@ -22,6 +21,7 @@ public class RuleBaseSystem {
 	    System.out.println("  %java RuleBaseSystem \"?x is b,?x is c\"");
 	} else {
     	 */
+    	/*
     	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     	while(true){
     		System.out.println("ルールファイル名を入力してください");
@@ -37,7 +37,9 @@ public class RuleBaseSystem {
     		}
     	}
     	
-    	filereader(fileName);
+    	offset = fileName.indexOf(".");
+		sb.append(fileName);
+		sb.insert(offset, "Wm");
     	
 	    fm = new FileManager();
 	    
@@ -52,7 +54,14 @@ public class RuleBaseSystem {
 	    //ArrayList wm    = fm.loadWm("AnimalWorldWm.data");
 //変更終了
 	    
-	    rulereader();
+	    System.out.println("質問文を入力してください");
+		System.out.println("例:?x is an Accord Wagon,?x is a Honda");
+		BufferedReader br2 = new BufferedReader(new InputStreamReader(System.in));
+		try{
+			query = br2.readLine();
+		}catch(IOException e){
+			System.out.println("Exception :" + e);
+		}
 	    rb = new RuleBase(rules,wm);
 //変更	    
 	    //StringTokenizer st = new StringTokenizer(args[0],",");
@@ -64,14 +73,32 @@ public class RuleBaseSystem {
 	    }
 	    rb.backwardChain(queries);
 	//}
+	*/
+    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    	while(true){
+    		System.out.println("ルールファイル名を入力してください");
+    		System.out.println("例:CarShop.data");
+    		try {
+    			fileName = br.readLine();
+    			file = new File(fileName);
+    			//ファイルが存在しているかどうか
+    			if(file.exists())
+    				break;
+    		} catch (IOException e) {
+    			System.out.println("Exception :" + e);
+    		}
+    	}
+    	filereader(fileName);
+    	exe(fileName);
+    	
     }
     
     //追加
     //fileNameWm.dataを自動的に読み込む
     public static void filereader(String fileName){   	
     	offset = fileName.indexOf(".");
-		sb.append(fileName);
-		sb.insert(offset, "Wm");				
+    	sb.append(fileName);
+    	sb.insert(offset, "Wm");				
     }
     
     public static void rulereader(){
@@ -84,6 +111,25 @@ public class RuleBaseSystem {
 		}catch(IOException e){
 			System.out.println("Exception :" + e);
 		}	    
+    }
+    
+    
+    public static void exe(String fileName){
+	    fm = new FileManager();
+	    
+		ArrayList<Rule> rules = fm.loadRules(fileName);
+	    ArrayList<String> wm = fm.loadWm(new String(sb));
+	   
+	    rulereader();
+	    rb = new RuleBase(rules,wm);
+	    
+	    StringTokenizer st = new StringTokenizer(query,",");
+	    
+	    ArrayList<String> queries = new ArrayList<String>();
+	    for(int i = 0 ; i < st.countTokens();){
+		queries.add(st.nextToken());
+	    }
+	    rb.backwardChain(queries);
     }
    //追加終了
 
