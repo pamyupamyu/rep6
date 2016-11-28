@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.io.*;
 
@@ -21,15 +22,32 @@ public class RuleBaseSystem {
 	    System.out.println("  %java RuleBaseSystem \"?x is b,?x is c\"");
 	} else {
     	 */
-    	filereader();
+    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    	while(true){
+    		System.out.println("ルールファイル名を入力してください");
+    		System.out.println("例:CarShop.data");
+    		try {
+    			fileName = br.readLine();
+    			file = new File(fileName);
+    			//ファイルが存在しているかどうか
+    			if(file.exists())
+    				break;
+    		} catch (IOException e) {
+    			System.out.println("Exception :" + e);
+    		}
+    	}
+    	
+    	filereader(fileName);
     	
 	    fm = new FileManager();
 	    
 //変更
 	    //ArrayList<Rule> rules = fm.loadRules("CarShop.data");
 	    //ArrayList rules = fm.loadRules("AnimalWorld.data");
-	    ArrayList<Rule> rules = fm.loadRules(fileName);
+		ArrayList<Rule> rules = fm.loadRules(fileName);
 	    ArrayList<String> wm = fm.loadWm(new String(sb));
+	    //ArrayList<Rule> rules = fm.loadRules(fileName);
+	    //ArrayList<String> wm = fm.loadWm(new String(sb));
 	    //ArrayList<String> wm    = fm.loadWm("CarShopWm.data");
 	    //ArrayList wm    = fm.loadWm("AnimalWorldWm.data");
 //変更終了
@@ -49,24 +67,11 @@ public class RuleBaseSystem {
     }
     
     //追加
-    public static void filereader(){
-    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    	while(true){
-    		System.out.println("ルールファイル名を入力してください");
-    		System.out.println("例:CarShop.data");
-    		try {
-    			fileName = br.readLine();
-    			file = new File(fileName);
-    			//ファイルが存在しているかどうか
-    			if(file.exists())
-    				break;
-    		} catch (IOException e) {
-    			System.out.println("Exception :" + e);
-    		}
-    	}
+    //fileNameWm.dataを自動的に読み込む
+    public static void filereader(String fileName){   	
     	offset = fileName.indexOf(".");
 		sb.append(fileName);
-		sb.insert(offset, "Wm");
+		sb.insert(offset, "Wm");				
     }
     
     public static void rulereader(){
