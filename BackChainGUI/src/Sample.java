@@ -5,8 +5,15 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -14,6 +21,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import BackwardChain.RuleBaseSystem;
 
@@ -23,6 +33,7 @@ import BackwardChain.RuleBaseSystem;
 public class Sample extends JFrame implements ActionListener{
 	JTextArea qtext;
 	JTextArea atext;
+	JPanel querySystem;
 	JPanel query;
 	JPanel ans;
 	JLabel qlabel;
@@ -30,7 +41,11 @@ public class Sample extends JFrame implements ActionListener{
 	JButton button1;
 	JButton button2;
 	JButton button3;
-	RuleBaseSystem rbs = new RuleBaseSystem();
+	RuleBaseSystem rbs;
+	File file;
+	ArrayList<String> wm;
+	boolean fileflag = false;
+	boolean fileflagWm = false;
 
 	public static void main(String arg[]){
 		JFrame frame = new Sample("Sample System");
@@ -38,34 +53,56 @@ public class Sample extends JFrame implements ActionListener{
 	}
 
 	Sample(String title){
+		rbs= new RuleBaseSystem();
+		rbs.GUISetUp();
+		wm = new ArrayList<String>();
+		
 		//ウィンドウの生成
 		setTitle(title);
-		setBounds(100,100,260,185);
+		setBounds(100,100,260,210);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
 		setLayout(new FlowLayout());
 
-		//queryのテキスト欄
+		//メニューバーの作成
+		JMenuBar menubar = new JMenuBar();
+		menubar.setBorderPainted(false);
+
+		JMenu menu1 = new JMenu("File");
+		menubar.add(menu1);
+
+		JMenuItem read = new JMenuItem("file読み込み");
+		JMenuItem readWm = new JMenuItem("Wmfile読み込み");
+		JMenuItem edit = new JMenuItem("編集");
+
+		menu1.add(read);
+		read.addActionListener(this);
+		menu1.add(readWm);
+		readWm.addActionListener(this);
+		menu1.add(edit);
+		edit.addActionListener(this);
+
+		setJMenuBar(menubar);
+
+
+		//query用のpanel作成
 		query = new JPanel();
 		query.setBackground(Color.white);
-		query.setPreferredSize(new Dimension(120,100));		
+		query.setPreferredSize(new Dimension(120,107));		
 		qlabel = new JLabel("query");
-		qtext = new JTextArea(4,10);
+		qtext = new JTextArea(5,10);
+		qtext.setText("推論に使用するファイル\nを読み込んでください");
 		JScrollPane qscroll = new JScrollPane(qtext);
-
 		query.add(qlabel);
 		query.add(qscroll);
 
-		//answerのテキスト欄
+		//answer用のpanel作成
 		ans = new JPanel();
 		ans.setBackground(Color.white);
-		ans.setPreferredSize(new Dimension(120,100));	
+		ans.setPreferredSize(new Dimension(120,107));	
 		alabel = new JLabel("answer");
-		atext = new JTextArea(4,10);
+		atext = new JTextArea(5,10);
 		JScrollPane ascroll = new JScrollPane(atext);
-		//atext.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-		//atext.setBorder(new EtchedBorder(EtchedBorder.RAISED));
 		ans.add(alabel);
 		ans.add(ascroll);
 
@@ -83,14 +120,15 @@ public class Sample extends JFrame implements ActionListener{
 		bpanel.add(button2);
 		bpanel.add(button3);
 
-		//パネルの配置
+		//応答システム用パネルに配置
 		add(query,BorderLayout.WEST);
 		add(ans,BorderLayout.EAST);
 		add(bpanel,BorderLayout.SOUTH);
 	}
+	
 
 	public void actionPerformed(ActionEvent e){
-		if(e.getSource()==button1){
+		if(e.getActionCommand()=="実行"){
 			try{
 				atext.setText("ここに答えがでる\nまだ未実装");
 				StringBuilder sb = new StringBuilder(qtext.getText());
@@ -99,16 +137,54 @@ public class Sample extends JFrame implements ActionListener{
 						sb.setCharAt(i,',');
 					}
 				}
-				String[] str = {sb.toString()};
-				rbs.main(str);
+				String str = sb.toString();
+				if(fileflag && fileflagWm){ 
+					rbs.exe(str,file,wm);
+				}else{
+					qtext.setText("ファイル読み込みを\nしてください");
+				}
 			}catch(IndexOutOfBoundsException ie){
 				System.out.println("ERROR");
 			}
-		}else if(e.getSource()==button2){
+		}else if(e.getActionCommand()=="推論過程"){
 			Chain chain = new Chain("Chain result");
 			chain.setText("推移が表示されます\nまだ未実装");
 			chain.setVisible(true);
+		}else if(e.getActionCommand()=="file読み込み"){
+			JFileChooser fc = new JFileChooser();
+			int selected = fc.showOpenDialog(this);
+			if(selected == JFileChooser.APPROVE_OPTION){
+				file = fc.getSelectedFile();
+				if(checkBeforeReadfile(file)){
+					fileflag = true;
+				}else{
+					System.out.println("ERROR");
+				}
+			}
+		}else if(e.getActionCommand()=="Wmfile読み込み"){
+			JFileChooser fc = new JFileChooser();
+			int selected = fc.showOpenDialog(this);
+			if(selected == JFileChooser.APPROVE_OPTION){
+				File filewm = fc.getSelectedFile();
+				if(checkBeforeReadfile(filewm)){
+					wm = rbs.readfileWm(filewm);
+					fileflagWm = true;
+				}else{
+					System.out.println("ERROR");
+				}
+			}
+		}else if(e.getActionCommand()=="編集"){
+			System.out.println("edit");
 		}
+	}
+
+	private static boolean checkBeforeReadfile(File file){
+		if (file.exists()){
+			if (file.isFile() && file.canRead()){
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
@@ -140,4 +216,3 @@ class Chain extends JFrame{
 		area1.setText(text);
 	}
 }
-
