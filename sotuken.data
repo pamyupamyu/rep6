@@ -1,0 +1,167 @@
+rule 	"LabRule1"
+if 	"?x want to study AI"
+then 	"?x want to study Machine learning"
+  "?x want to study Multi agent"
+  "?x want to study Natural language processing"
+
+rule 	"LabRule2"
+if 	"?x want to study Hardware"
+then 	"?x want to study Compiler"
+    "?x want to study Robot"
+
+rule 	"LabRule3"
+if 	"?x want to study Media"
+then 	"?x want to study Image information processing"
+        "?x want to study Speech information processing"
+
+rule 	"LabRule4"
+if 	"?x want to study Robot"
+  "?x want to study Image information processing"
+then 	"Nakamura Lab is recommended for ?x"
+
+rule 	"LabRule5"
+if 	"?x want to study Data mining"
+  "?x want to study Logic"
+then 	"Inuzuka Lab is recommended for ?x"
+
+rule 	"LabRule6"
+if 	"?x want to study Algorithm"
+  "?x want to study AI"
+then 	"Moriyama Lab is recommended for ?x"
+
+rule 	"LabRule7"
+if 	"?x want to study Image information processing"
+then 	"Hontani Lab is recommended for ?x"
+
+rule 	"LabRule8"
+if 	"?x want to study Media"
+  "?x want to study Robot"
+then 	"Umezaki Lab is recommended for ?x"
+
+rule 	"LabRule9"
+if 	"?x want to study Image information processing"
+then 	"Satou Lab is recommended for ?x"
+
+rule 	"LabRule10"
+if 	"?x want to study Speech information processing"
+then 	"Tokuda Lab is recommended for ?x"
+
+rule 	"LabRule11"
+if 	"?x want to study Speech information processing"
+then 	"Tokuda Lab is recommended for ?x"
+  "Ri Lab is recommended for ?x"
+
+rule 	"LabRule12"
+if 	"?x want to study others"
+then 	"Oda Lab is recommended for ?x"
+
+rule 	"LabRule13"
+if 	"?x want to study Image information processing"
+then 	"Hunahasi Lab is recommended for ?x"
+
+rule 	"LabRule14"
+if 	"?x want to study Algorithm"
+  "?x want to study distributed system"
+then 	"Katayama Lab is recommended for ?x"
+
+rule 	"LabRule15"
+if 	"?x want to study Security"
+then 	"Saitou Lab is recommended for ?x"
+
+rule 	"LabRule16"
+if 	"?x want to study Natural language processing"
+  "?x want to study Logic"
+then 	"Wadayama Lab is recommended for ?x"
+
+rule 	"LabRule17"
+if 	"?x want to study Algorithm"
+  "?x want to study distributed system"
+  "?x want to study Robot"
+then 	"Izumi Lab is recommended for ?x"
+
+rule 	"LabRule18"
+if 	"?x want to study Network"
+then 	"Itou(yoshi) Lab is recommended for ?x"
+
+rule 	"LabRule19"
+if 	"?x want to study GPS"
+then 	"Uchiya(takumi) Lab is recommended for ?x"
+
+rule 	"LabRule20"
+if 	"?x want to study Secrity"
+  "?x want to study AI"
+  "?x want to study Multi agent"
+then 	"Uchiya Lab is recommended for ?x"
+
+rule 	"LabRule21"
+if 	"?x want to study Hardware"
+then 	"Tumura Lab is recommended for ?x"
+
+rule 	"LabRule22"
+if 	"?x want to study AI"
+then 	"Shintani(Ozono) Lab is recommended for ?x"
+
+rule 	"LabRule23"
+if 	"?x want to study Image information processing"
+  "?x want to study programming language"
+then 	"Hukusima Lab is recommended for ?x"
+
+rule 	"LabRule24"
+if 	"?x want to study Multi agent"
+then 	"Itou(taka) Lab is recommended for ?x"
+
+rule 	"LabRule25"
+if 	"?x want to study Robot"
+then 	"Katou Lab is recommended for ?x"
+
+rule 	"LabRule26"
+if 	"?x want to study natural language processing"
+then 	"Shiramatu Lab is recommended for ?x"
+
+rule 	"LabRule27"
+if 	"?x want to study brain"
+then 	"Hunase Lab is recommended for ?x"
+
+rule 	"LabRule28"
+if 	"?x want to study math"
+then 	"Adachi Lab is recommended for ?x"
+  "Mizusawa Lab is recommended for ?x"
+  "Yamagishi Lab is recommended for ?x"
+  "Matuzoe Lab is recommended for ?x"
+
+rule 	"LabRule29"
+if 	"?x want to study Network"
+then 	"Nunome Lab is recommended for ?x"
+
+rule 	"LabRule30"
+if 	"?x want to study Network"
+  "?x want to study distributed system"
+then 	"Matuo Lab is recommended for ?x"
+
+rule 	"LabRule31"
+if 	"?x want to study AI"
+  "?x want to study Logic"
+then 	"Seki Lab is recommended for ?x"
+
+rule 	"LabRule32"
+if 	"?x want to study Machine learning"
+  "?x want to study Data mining"
+then 	"Takeuchi Lab is recommended for ?x"
+
+rule 	"LabRule33"
+if 	"?x want to study Muti agent"
+  "?x want to study distributed system"
+then 	"Matui Lab is recommended for ?x"
+
+rule 	"LabRule34"
+if 	"?x want to study GPS"
+  "?x want to study Robot"
+then 	"Yamamoto Lab is recommended for ?x"
+
+rule 	"LabRule35"
+if 	"?x want to study Speech information processing"
+then 	"Yamamoto Lab is recommended for ?x"
+
+rule 	"LabRule36"
+if 	"?x want to study Robot"
+then 	"Ishibashi Lab is recommended for ?x"
