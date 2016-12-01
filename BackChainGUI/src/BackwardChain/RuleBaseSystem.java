@@ -70,25 +70,37 @@ public class RuleBaseSystem {
 	}
 	
 	//GUI用のメソッド追加
+	/**
+	 * 変数の初期化
+	 */
 	public static void GUISetUp(){
 		fm = new FileManager();
 		rules = new ArrayList<Rule>();
 		wm = new ArrayList<String>();
 	}
-	
+
 	public static ArrayList<String> readfileWm(File fileWm){
 		ArrayList<String> wm = fm.loadWm(fileWm);
 		return wm;
 	}
 	
+	public String getAnswer(){
+		return rb.solution();
+	}
+	
+	public String getChainPath(){
+		return rb.chain_path();
+	}
+	
+	/**
+	 * 実行メソッド
+	 */
 	public static void exe(String query,File file,ArrayList<String> wm){
 		ArrayList<Rule> rules = fm.loadRules(file);
-		for(int i=0;i<wm.size();++i){
-			System.out.println("Wm:"+wm.get(i));
-		}
 		rb = new RuleBase(rules,wm);
+		
 		StringTokenizer st = new StringTokenizer(query,",");
-
+		
 		ArrayList<String> queries = new ArrayList<String>();
 		for(int i = 0 ; i < st.countTokens();){
 			queries.add(st.nextToken());
@@ -96,7 +108,7 @@ public class RuleBaseSystem {
 		rb.backwardChain(queries);
 	}
 	//追加終了
-
+	
 }
 
 
@@ -104,6 +116,8 @@ class RuleBase implements Serializable{
 	String fileName;
 	ArrayList<String> wm;
 	ArrayList<Rule> rules;
+	String answer;
+	String chain="";
 
 	RuleBase(ArrayList<Rule> theRules,ArrayList<String> theWm){
 		wm = theWm;
@@ -119,12 +133,15 @@ class RuleBase implements Serializable{
 	}
 
 	public void backwardChain(ArrayList<String> hypothesis){
+		answer = "";
+		chain = "";
 		System.out.println("Hypothesis:"+hypothesis);
 		ArrayList<String> orgQueries = (ArrayList)hypothesis.clone();
 		//HashMap<String,String> binding = new HashMap<String,String>();
 		HashMap<String,String> binding = new HashMap<String,String>();
 		if(matchingPatterns(hypothesis,binding)){
 			System.out.println("Yes");
+			answer += "Yes\n";
 			System.out.println(binding);
 			// 最終的な結果を基のクェリーに代入して表示する
 			for(int i = 0 ; i < orgQueries.size() ; i++){
@@ -133,10 +150,25 @@ class RuleBase implements Serializable{
 				String anAnswer = instantiate(aQuery,binding);
 				System.out.println("Query: "+aQuery);
 				System.out.println("Answer:"+anAnswer);
+				answer += anAnswer + "\n";
 			}
 		} else {
 			System.out.println("No");
+			answer += "No\n";
 		}
+	}
+	
+	
+	public String solution(){
+		return answer;
+	}
+	
+	public String chain_path(){
+		System.out.println(chain.length());
+		if(chain.length()==0){
+			return "No chain path";
+		}
+		return chain;
 	}
 
 	/**
@@ -167,8 +199,10 @@ class RuleBase implements Serializable{
 				}
 				int tmpPoint = matchingPatternOne(firstPattern,theBinding,cPoint);
 				System.out.println("tmpPoint: "+tmpPoint);
+				chain += "tmpPoint: "+tmpPoint+"\n";
 				if(tmpPoint != -1){
 					System.out.println("Success:"+firstPattern);
+					chain +="Success:"+firstPattern+"\n";
 					if(matchingPatterns(thePatterns,theBinding)){
 						//成功  
 						return true;
@@ -214,7 +248,9 @@ class RuleBase implements Serializable{
 						(String)wm.get(i),
 						theBinding)){
 					System.out.println("Success WM");
+					chain += "Success WM\n";
 					System.out.println((String)wm.get(i)+" <=> "+thePattern);
+					chain +=(String)wm.get(i)+" <=> "+thePattern+"\n";
 					return i+1;
 				}
 			}
@@ -234,7 +270,9 @@ class RuleBase implements Serializable{
 						(String)aRule.getConsequent(),
 						theBinding)){
 					System.out.println("Success RULE");
+					chain += "Success RULE\n";
 					System.out.println("Rule:"+aRule+" <=> "+thePattern);
+					chain += "Rule:"+aRule+" <=> "+thePattern+"\n";
 					// さらにbackwardChaining
 					ArrayList<String> newPatterns = aRule.getAntecedents();
 					if(matchingPatterns(newPatterns,theBinding)){
@@ -274,6 +312,7 @@ class RuleBase implements Serializable{
 			if(var(tmp)){
 				result = result + " " + (String)theBindings.get(tmp);
 				System.out.println("tmp: "+tmp+", result: "+result);
+				chain += "tmp: "+tmp+", result: "+result+"\n";
 			} else {
 				result = result + " " + tmp;
 			}
@@ -286,6 +325,7 @@ class RuleBase implements Serializable{
 		return str1.startsWith("?");
 	}
 }
+
 
 class FileManager {
 	FileReader f;

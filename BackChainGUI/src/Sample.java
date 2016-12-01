@@ -3,6 +3,9 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -11,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -43,7 +47,8 @@ public class Sample extends JFrame implements ActionListener{
 	JButton button3;
 	RuleBaseSystem rbs;
 	File file;
-	ArrayList<String> wm;
+	Wmadd wmadd;
+	Chain chain;
 	boolean fileflag = false;
 	boolean fileflagWm = false;
 
@@ -55,11 +60,12 @@ public class Sample extends JFrame implements ActionListener{
 	Sample(String title){
 		rbs= new RuleBaseSystem();
 		rbs.GUISetUp();
-		wm = new ArrayList<String>();
-		
+		wmadd = new Wmadd("wm追加");
+		chain = new Chain("Chain result");
+
 		//ウィンドウの生成
 		setTitle(title);
-		setBounds(100,100,260,210);
+		setBounds(100,100,260,217);
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(new FlowLayout());
@@ -67,31 +73,29 @@ public class Sample extends JFrame implements ActionListener{
 		//メニューバーの作成
 		JMenuBar menubar = new JMenuBar();
 		menubar.setBorderPainted(false);
-
 		JMenu menu1 = new JMenu("File");
 		menubar.add(menu1);
 
 		JMenuItem read = new JMenuItem("file読み込み");
 		JMenuItem readWm = new JMenuItem("Wmfile読み込み");
-		JMenuItem edit = new JMenuItem("編集");
+		//JMenuItem edit = new JMenuItem("rule編集");
 
 		menu1.add(read);
 		read.addActionListener(this);
 		menu1.add(readWm);
 		readWm.addActionListener(this);
-		menu1.add(edit);
-		edit.addActionListener(this);
+		//menu1.add(edit);
+		//edit.addActionListener(this);
 
 		setJMenuBar(menubar);
-
 
 		//query用のpanel作成
 		query = new JPanel();
 		query.setBackground(Color.white);
-		query.setPreferredSize(new Dimension(120,107));		
+		query.setPreferredSize(new Dimension(120,115));		
 		qlabel = new JLabel("query");
 		qtext = new JTextArea(5,10);
-		qtext.setText("推論に使用するファイル\nを読み込んでください");
+		qtext.setText("推論に使用する\nファイルを\n読み込んでください");
 		JScrollPane qscroll = new JScrollPane(qtext);
 		query.add(qlabel);
 		query.add(qscroll);
@@ -99,7 +103,7 @@ public class Sample extends JFrame implements ActionListener{
 		//answer用のpanel作成
 		ans = new JPanel();
 		ans.setBackground(Color.white);
-		ans.setPreferredSize(new Dimension(120,107));	
+		ans.setPreferredSize(new Dimension(120,115));	
 		alabel = new JLabel("answer");
 		atext = new JTextArea(5,10);
 		JScrollPane ascroll = new JScrollPane(atext);
@@ -114,7 +118,7 @@ public class Sample extends JFrame implements ActionListener{
 		button1.addActionListener(this);
 		button2 = new JButton("推論過程");
 		button2.addActionListener(this);
-		button3 = new JButton("未実装");
+		button3 = new JButton("wm編集");
 		button3.addActionListener(this);
 		bpanel.add(button1);
 		bpanel.add(button2);
@@ -125,7 +129,7 @@ public class Sample extends JFrame implements ActionListener{
 		add(ans,BorderLayout.EAST);
 		add(bpanel,BorderLayout.SOUTH);
 	}
-	
+
 
 	public void actionPerformed(ActionEvent e){
 		if(e.getActionCommand()=="実行"){
@@ -139,7 +143,9 @@ public class Sample extends JFrame implements ActionListener{
 				}
 				String str = sb.toString();
 				if(fileflag && fileflagWm){ 
-					rbs.exe(str,file,wm);
+					rbs.exe(str,file,wmadd.getWm());
+					atext.setText(rbs.getAnswer());
+					chain.setText(rbs.getChainPath());
 				}else{
 					qtext.setText("ファイル読み込みを\nしてください");
 				}
@@ -147,9 +153,10 @@ public class Sample extends JFrame implements ActionListener{
 				System.out.println("ERROR");
 			}
 		}else if(e.getActionCommand()=="推論過程"){
-			Chain chain = new Chain("Chain result");
-			chain.setText("推移が表示されます\nまだ未実装");
 			chain.setVisible(true);
+		}else if(e.getActionCommand()=="wm編集"){
+			wmadd.showWm();
+			wmadd.setVisible(true);
 		}else if(e.getActionCommand()=="file読み込み"){
 			JFileChooser fc = new JFileChooser();
 			int selected = fc.showOpenDialog(this);
@@ -167,14 +174,13 @@ public class Sample extends JFrame implements ActionListener{
 			if(selected == JFileChooser.APPROVE_OPTION){
 				File filewm = fc.getSelectedFile();
 				if(checkBeforeReadfile(filewm)){
-					wm = rbs.readfileWm(filewm);
+					ArrayList<String> list = rbs.readfileWm(filewm);
+					wmadd.setText(list);
 					fileflagWm = true;
 				}else{
 					System.out.println("ERROR");
 				}
 			}
-		}else if(e.getActionCommand()=="編集"){
-			System.out.println("edit");
 		}
 	}
 
@@ -190,7 +196,7 @@ public class Sample extends JFrame implements ActionListener{
 }
 
 /**
- * 推移表示GUIフレーム
+ * 推移表示ウィンドウ
  */
 class Chain extends JFrame{
 	JPanel panel;
@@ -201,12 +207,22 @@ class Chain extends JFrame{
 		//ウィンドウの生成
 		setTitle(title);
 		setBounds(200,200,230,180);
-		setResizable(false);
-		setLayout(new FlowLayout());
+		GridBagLayout layout = new GridBagLayout();
+		GridBagConstraints gbc = new GridBagConstraints();
 
 		panel = new JPanel();
+		panel.setLayout(layout);
 		area1 = new JTextArea(8,18);
 		scroll1 = new JScrollPane(area1);
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.gridheight = 1;
+		gbc.weightx = 1.0d;
+		gbc.weighty = 1.0d;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(5, 5, 5, 5);
+		layout.setConstraints(scroll1, gbc);
 
 		panel.add(scroll1);
 		add(panel, BorderLayout.CENTER);
@@ -216,3 +232,78 @@ class Chain extends JFrame{
 		area1.setText(text);
 	}
 }
+
+/**
+ * wm編集用ウィンドウ
+ */
+class Wmadd extends JFrame implements ActionListener{
+	JPanel panel;
+	JTextArea area1;
+	JScrollPane scroll1;
+	ArrayList<String> wm;
+	JButton addtion;
+
+	Wmadd(String title){
+		//ウィンドウの生成
+		setTitle(title);
+		setBounds(200,200,230,190);
+		//setResizable(false);
+
+		wm = new ArrayList<String>();
+
+		GridBagLayout layout = new GridBagLayout();
+		panel = new JPanel();
+		panel.setLayout(layout);
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		area1 = new JTextArea(7,18);
+		scroll1 = new JScrollPane(area1);
+		addtion = new JButton("完了");
+		addtion.addActionListener(this);
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.gridheight = 1;
+		gbc.weightx = 1.0d;
+		gbc.weighty = 1.0d;
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(3, 3, 3, 3);
+		layout.setConstraints(scroll1, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.weightx = 0d;
+		gbc.weighty = 0d;
+		//gbc.fill = GridBagConstraints.BOTH;
+		gbc.insets = new Insets(0, 3, 3, 3);
+		layout.setConstraints(addtion, gbc);
+
+		panel.add(scroll1);
+		panel.add(addtion);
+		add(panel, BorderLayout.CENTER);
+	}
+
+	void showWm(){
+		String str="";
+		for(int i=0;i<wm.size();++i){
+			str = str + wm.get(i)+"\n";
+		}
+		area1.setText(str);
+	}
+
+	void setText(ArrayList<String> text){
+		wm = text;
+	}
+
+	ArrayList<String> getWm(){
+		return wm;
+	}
+
+	public void actionPerformed(ActionEvent e){
+		String[] str = area1.getText().split("\n",0);
+		wm = new ArrayList(Arrays.asList(str));
+		setVisible(false);
+	}
+
+}
+
