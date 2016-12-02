@@ -1,18 +1,31 @@
 rule 	"LabRule1"
 if 	"?x want to study AI"
 then 	"?x want to study Machine learning"
-  "?x want to study Multi agent"
-  "?x want to study Natural language processing"
+
+rule 	"LabRule1.1"
+if 	"?x want to study AI"
+then 	"?x want to study Multi agent"
+
+rule 	"LabRule1.2"
+if 	"?x want to study AI"
+then"?x want to study Natural language processing"
 
 rule 	"LabRule2"
 if 	"?x want to study Hardware"
 then 	"?x want to study Compiler"
     "?x want to study Robot"
 
+rule 	"LabRule2.1"
+if 	"?x want to study Hardware"
+then 	"?x want to study Robot"
+
 rule 	"LabRule3"
 if 	"?x want to study Media"
 then 	"?x want to study Image information processing"
-        "?x want to study Speech information processing"
+
+rule 	"LabRule3.1"
+if 	"?x want to study Media"
+then 	"?x want to study Speech information processing"
 
 rule 	"LabRule4"
 if 	"?x want to study Robot"
@@ -50,6 +63,10 @@ rule 	"LabRule11"
 if 	"?x want to study Speech information processing"
 then 	"Tokuda Lab is recommended for ?x"
   "Ri Lab is recommended for ?x"
+
+rule 	"LabRule11.1"
+if 	"?x want to study Speech information processing"
+then 	"Ri Lab is recommended for ?x"
 
 rule 	"LabRule12"
 if 	"?x want to study others"
@@ -125,9 +142,18 @@ then 	"Hunase Lab is recommended for ?x"
 rule 	"LabRule28"
 if 	"?x want to study math"
 then 	"Adachi Lab is recommended for ?x"
-  "Mizusawa Lab is recommended for ?x"
-  "Yamagishi Lab is recommended for ?x"
-  "Matuzoe Lab is recommended for ?x"
+
+rule 	"LabRule28.1"
+if 	"?x want to study math"
+then 	"Mizusawa Lab is recommended for ?x"
+
+rule 	"LabRule28.2"
+if 	"?x want to study math"
+then 	"Yamagishi Lab is recommended for ?x"
+
+rule 	"LabRule28.3"
+if 	"?x want to study math"
+then 	"Matuzoe Lab is recommended for ?x"
 
 rule 	"LabRule29"
 if 	"?x want to study Network"
