@@ -365,7 +365,7 @@ class FileManager {
 							new Rule(name,antecedents,consequent));
 					break;
 				default:
-					System.out.println(token);
+					//System.out.println(token);
 					break;
 				}
 			}
