@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+
+  <!--
+   デフォルトのスタイル
+   より見やすく変更しても良い
+  -->
+  <link rel="stylesheet" href="default.css"/>
+
+  <!--
+    SyntaxHighlighter 3.0.83 (http://alexgorbatchev.com/SyntaxHighlighter/)
+    Java のコードを読みやすくする
+  -->
+  <link rel="stylesheet" href="shCore.css"/>
+  <link rel="stylesheet" href="shThemeDjango.css"/>
+  <script src="shCore.js"></script>
+  <script src="shBrushJava.js"></script>
+  <script>SyntaxHighlighter.all();</script>
+
+  <!--
+    目次を動的に生成する
+  -->
+  <script src="outliner.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      // 第一引数: アウトライン対象の要素のセレクタ，第二引数: アウトラインを格納する要素のセレクタ．
+      new TOutliner('h2', '#outline');
+    });
+  </script>
+
+  <title>知能プログラミング演習IIグループ作成 レポート</title>
+</head>
+
+<!-- このグループ作成資料は，同じファイルを全員のGrepX（Grep5やGrep6等）ディレクトリにコピーして置くこと -->
+
+<body>
+<header>
+  <!-- グループ番号を書く．-->
+  <h1>グループ1</h1>
+
+  <!-- 目次生成用 -->
+  <nav id="outline"></nav>
+</header>
+
+<!-- グループ全員の名前, 学籍番号を書き，個人作成書類へのリンクを張る -->
+<h2>メンバー</h2>
+<ul>
+<li><a href="../../../../ckb15068/workspace/kprep/rep6/index.html">島野広大 26115068</a>
+<li><a href="../../../../ckb15069/workspace/kprep/rep6/index.html">清水涼太 26115069</a>
+<li><a href="../../../../ckb15070/workspace/kprep/rep6/index.html">新海知道 26115070</a>
+<li><a href="../../../../ckb15073/workspace/kprep/rep6/index.html">椙田大輔 26115073</a>
+<li><a href="../../../../ckb15074/workspace/kprep/rep6/index.html">鈴木健太 26115074</a>
+</ul>
+
+<h2>役割分担</h2>
+<!-- 役割分担を書く．-->
+<ul>
+<li>島野広大: 課題6-1,グループ作成書類担当
+<li>清水涼太: 課題6-3 後ろ向き推論GUI担当
+<li>新海知道: 前向き推論GUI担当 ,課題6−4 前向き推論GUI担当
+<li>椙田大輔: 課題6-2 前向き推論担当 応用事例作成
+<li>鈴木健太: 課題6-2 後ろ向き推論担当 応用事例作成
+</ul>
+
+<h2>ソースファイル</h2>
+<ul>
+  <li><a href="../../../../ckb15069/workspace/GUI/src/BackWordGUI.java">BackwardGUI.java(課題6−3後ろ向き推論)</a>
+  <li><a href="../../../../ckb15070/workspace/ForwardChain/src/RuleBaseSystem.java">RuleBaseSystem.java(課題6−3前向き推論)</a>
+  <li><a href="../../../../ckb15073/workspace/ForwardChain/src/RuleBaseSystem.java">RuleBaseSystem.java(課題6−2後ろ向き推論)</a>
+  <li><a href="../../../../ckb15074/workspace/BackwardChain/src/RuleBaseSystem.java">RuleBaseSystem.java(課題6−2後ろ向き推論)</a>
+    <!-- 実装・変更したソースファイルへのリンク．修正する． -->
+    <!-- ※ リンクは絶対パスに変更せず，上記のような相対パスのままで！ -->
+</ul>
+
+<h2>応用事例</h2>
+<ul>
+ <li><a href="../../../../ckb15074/workspace/BackwardChain/sotuken.data">sotuken.data</a>
+</ul>
+<hr>
+
+<h2>課題6-1</h2>
+<!-- 課題を書く．-->
+まず，教科書3.2.1の「前向き推論」のプログラムと教科書3.2.2の「後向き推論」のプログラムとの動作確認をし，前向き推論と後ろ向き推論の違いを説明せよ．<br>
+また，実行例を示してルールが選択される過程を説明せよ．<br>
+説明の際には，ドロー系ツール（LibreOfficeのDrawやTgifなど）を使ってp.106 図3.11やp.118 図3.12のような図として示すことが望ましい．<br>
+
+<h3>独自仕様の説明</h3>
+<!--
+ もし自分で独自に決めた仕様があれば，その説明を書く．
+-->
+<p>
+なし
+</p>
+<h3>前向き推論と後ろ向き推論の違い</h3>
+<p>
+前向き推論は事実からルールを用いて、ある事柄が成り立つかどうかを確かめる方法であり、後ろ向き推論はルールを用いて、ある事柄が成り立つために必要な事実があるかどうかを調べ、その事柄が成り立つかどうか確かめる方法である。<br>
+詳細は<a href="../../../../ckb15068/workspace/kprep/rep6/index.html">担当者のレポート</a>
+</p>
+
+<h3>ルールの適応の画像</h3>
+<p>前向き推論でのルールの適応を示した図</p>
+<!-- 前向き推論で作成した図 -->
+<img src="./Forward1.png" width="600" height="400">
+<br>
+<p>後ろ向き推論でのルールの適応を示した図</p>
+<!-- 後ろ向き推論で作成した図 -->
+<img src="./Backward1.png" width="500" height="400">
+<br>
+<p>
+詳細は<a href="../../../../ckb15068/workspace/kprep/rep6/index.html">担当者のレポート </a>
+</p>
+
+<h2>課題6-2(前向き推論)</h2>
+<!-- 以下，上記と同様 -->
+CarShop.data , AnimalWorld.data 等のデータファイルを実際的な応用事例に書き換えて，前向き推論，および後ろ向き推論に基づく質問応答システムを作成せよ．<br>
+どのような応用事例を扱うかは，メンバーで話し合って決めること．<br>
+なお，ユーザの質問は英語や日本語のような自然言語が望ましいが，難しければ変数を含むパターン等でも構わない．<br>
+
+<h3>独自仕様の説明</h3>
+<p>
+コンソールからのルールファイル名の入力、アサーションの追加入力、質問文の入力を出来るようにした。<br>
+ルールの後件に具体化されていない変数が合った場合、具体化が行われないため、nullが入力されてしまい変数として扱えなくなってしまう。<br>
+応用事例として卒業研究室の選択の助けとなるデータを作成した。<br>
+<li><a href="../../../../ckb15073/workspace/ForwardChain/sotuken.data">sotuken.data</a>
+</p>
+<h3>プログラムの構造</h3>
+<h4>クラスWarking Memory</h4>
+<p>
+ワーキングメモリを表すクラス
+</p>
+<ul>
+	<li>matchingAssertions
+	<p>
+	マッチするアサーションに対するバインディング情報を返す。
+	</p>
+
+	<li>matchable
+	<p>
+	メソッドmatchingAssertionsの中身、すべての質問文とアサーションとのマッチングをメソッドmatchingを用いて行っている。
+	</p>
+
+	<li>addAssertion
+	<p>
+	アサーションをワーキングメモリに加える。
+	</p>
+
+	<li>contains
+	<p>
+	指定されたアサーションがすでに含まれているか調べる。
+	</p>
+
+	<li>toString
+	<p>
+	ワーキングメモリの内容をストリングとして返す。
+	</p>
+</ul>
+<br>
+<h4>クラスRuleBase</h4>
+
+<p>
+ルールベースを表すクラス
+</p>
+<ul>
+	<li>RuleBase
+	<p>
+	ルールベースのファイルの指定、ルールの読み取り、アサーションの追加を行う。
+	</p>
+
+	<li>StringRead
+	<p>
+	ルールファイル名、アサーション、質問文の入力を取り扱う、場合わけは引数のフラグを用いている。
+	</p>
+
+	<li>forwardChain
+	<p>
+	前向き推論を行うメソッド。<br>
+	</p>
+
+	<li>instantiate
+	<p>
+	変数を含む後件の変数が具体化できるなら、具体化した文に置き換える。<br>
+	具体化できないなら、変数のままにする。
+	</p>
+
+	<li>var
+	<p>
+	与えられたトークンが変数であるかを調べる。
+	</p>
+
+	<li>loadRules
+	<p>
+	ルールベースの文章をルールの形式に読み取り、生成する。
+	</p>
+</ul>
+	<br>
+	<h4>クラスRule</h4>
+	<p>
+	ルールを表すクラス
+	</p>
+<ul>
+	<li>Rule
+	<p>
+	インスタンスに引数のルールを設定する。
+	</p>
+
+	<li>getName
+	<p>
+	ルールの名前を返す。
+	</p>
+
+	<li>toString
+	<p>
+	ルールをString形式で返す。
+	</p>
+
+	<li>getAntecedents
+	<p>
+	ルールの前件を返す。
+	</p>
+
+	<li>getConsequent
+	<p>
+	ルールの後件を返す。
+	</p>
+</ul>
+<br>
+<h4>クラスMatcher</h4>
+<p>
+マッチングを扱うクラス
+</p>
+<ul>
+	<li>Matcher
+	<p>
+	ハッシュマップの初期化。
+	</p>
+
+	<li>matching
+	<p>
+	文をトークンに分解してマッチングをする。
+	</p>
+
+	<li>tokenMatching
+	<p>
+	トークンのマッチングを行う
+	</p>
+
+	<li>varMatching
+	<p>
+	変数のトークンのマッチングを行う
+	</p>
+
+	<li>var
+	<p>
+	与えられたトークンが変数であるかを調べる。
+	</p>
+</ul>
+<h3>実装の説明</h3>
+<p>
+メソッドRuleBase、StringRead、forwardChainにおいてコンソールからルールベースファイル名、アサーションの追加、質問文の入力を行えるようにした。<br>
+メソッドinstatiateにおいて、後件の変数が具体化されない場合は変更をしないように処理を追加した。<br>
+メソッドvarMatchingにおいて、質疑応答システムを追加したことにより変更を加えた。質問文とアサーションのマッチングでは変数束縛を行わないように処理を追加した。<br>
+詳細は<a href="../../../../ckb15073/workspace/kprep/rep6/index.html">担当者のレポート</a>
+</p>
+<h3>実行例</h3>
+<p>
+以下に卒研配属に関する事例の前向き推論による質疑応答システムの例を示す。
+</p>
+<!-- 折り畳み展開ポインタ -->
+<div onclick="obj=document.getElementById('open1').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="cursor:pointer;">実行例  ▼ クリックで展開</a>
+</div>
+<!--// 折り畳み展開ポインタ -->
+ 
+<!-- 折り畳まれ部分 -->
+<div id="open1" style="display:none;clear:both;">
+
+<!--ここの部分が折りたたまれる＆展開される部分になります。
+自由に記述してください。-->
+
+
+<pre>
+ルールファイル名を入力してください。
+例:CarShop.data
+->sotuken.data
+追加するアサーションを入力してください。
+例:my-car is inexpensive
+終了するならexitを入力してください。
+->Shimano wants to study AI
+ADD:Shimano wants to study AI
+追加するアサーションを入力してください。
+例:my-car is inexpensive
+終了するならexitを入力してください。
+->Shimano wants to study Robot
+ADD:Shimano wants to study Robot
+追加するアサーションを入力してください。
+例:my-car is inexpensive
+終了するならexitを入力してください。
+->Shimano wants to study Multi agent
+ADD:Shimano wants to study Multi agent
+追加するアサーションを入力してください。
+例:my-car is inexpensive
+終了するならexitを入力してください。
+->exit
+34
+34
+LabRule1 [?x wants to study AI]->?x wants to study Machine learning
+LabRule1.1 [?x wants to study AI]->?x wants to study Multi agent
+LabRule1.2 [?x wants to study AI]->?x wants to study Natural language processing
+LabRule2 [?x wants to study Hardware]->?x wants to study Compiler
+LabRule2.1 [?x wants to study Hardware]->?x wants to study Robot
+LabRule3 [?x wants to study Media]->?x wants to study Image information processing
+LabRule3.1 [?x wants to study Media]->?x wants to study Speech information processing
+LabRule4 [?x wants to study Robot, ?x wants to study Image information processing]->Nakamura-Lab is recommended for ?x
+LabRule5 [?x wants to study Data mining, ?x wants to study Logic]->Inuzuka-Lab is recommended for ?x
+LabRule6 [?x wants to study Algorithm, ?x wants to study AI]->Moriyama-Lab is recommended for ?x
+LabRule7 [?x wants to study Image information processing]->Hontani-Lab is recommended for ?x
+LabRule8 [?x wants to study Media, ?x wants to study Robot]->Umezaki-Lab is recommended for ?x
+LabRule9 [?x wants to study Image information processing]->Satou-Lab is recommended for ?x
+LabRule10 [?x wants to study Speech information processing]->Tokuda-Lab is recommended for ?x
+LabRule11 [?x wants to study Speech information processing]->Tokuda-Lab is recommended for ?x
+LabRule11.1 [?x wants to study Speech information processing]->Ri-Lab is recommended for ?x
+LabRule12 [?x wants to study others]->Oda-Lab is recommended for ?x
+LabRule13 [?x wants to study Image information processing]->Hunahasi-Lab is recommended for ?x
+LabRule14 [?x wants to study Algorithm, ?x wants to study distributed system]->Katayama-Lab is recommended for ?x
+LabRule15 [?x wants to study Security]->Saitou-Lab is recommended for ?x
+LabRule16 [?x wants to study Natural language processing, ?x wants to study Logic]->Wadayama-Lab is recommended for ?x
+LabRule17 [?x wants to study Algorithm, ?x wants to study distributed system, ?x wants to study Robot]->Izumi-Lab is recommended for ?x
+LabRule18 [?x wants to study Network]->Itou(yoshi)-Lab is recommended for ?x
+LabRule19 [?x wants to study GPS]->Uchiya(takumi)-Lab is recommended for ?x
+LabRule20 [?x wants to study Secrity, ?x wants to study AI, ?x wants to study Multi agent]->Uchiya-Lab is recommended for ?x
+LabRule21 [?x wants to study Hardware]->Tumura-Lab is recommended for ?x
+LabRule22 [?x wants to study AI]->Shintani(Ozono)-Lab is recommended for ?x
+LabRule23 [?x wants to study Image information processing, ?x wants to study programming language]->Hukusima-Lab is recommended for ?x
+LabRule24 [?x wants to study Multi agent]->Itou(taka)-Lab is recommended for ?x
+LabRule25 [?x wants to study Robot]->Katou-Lab is recommended for ?x
+LabRule26 [?x wants to study natural language processing]->Shiramatu-Lab is recommended for ?x
+LabRule27 [?x wants to study brain]->Hunase-Lab is recommended for ?x
+LabRule28 [?x wants to study math]->Adachi-Lab is recommended for ?x
+LabRule28.1 [?x wants to study math]->Mizusawa-Lab is recommended for ?x
+LabRule28.2 [?x wants to study math]->Yamagishi-Lab is recommended for ?x
+LabRule28.3 [?x wants to study math]->Matuzoe-Lab is recommended for ?x
+LabRule29 [?x wants to study Network]->Nunome-Lab is recommended for ?x
+LabRule30 [?x wants to study Network, ?x wants to study distributed system]->Matuo-Lab is recommended for ?x
+LabRule31 [?x wants to study AI, ?x wants to study Logic]->Seki-Lab is recommended for ?x
+LabRule32 [?x wants to study Machine learning, ?x wants to study Data mining]->Takeuchi-Lab is recommended for ?x
+LabRule33 [?x wants to study Muti agent, ?x wants to study distributed system]->Matui-Lab is recommended for ?x
+LabRule34 [?x wants to study GPS, ?x wants to study Robot]->Yamamoto-Lab is recommended for ?x
+LabRule35 [?x wants to study Speech information processing]->Yamamoto-Lab is recommended for ?x
+LabRule36 [?x wants to study Robot]->Ishibashi-Lab is recommended for ?x
+apply rule:LabRule1
+Success: Shimano wants to study Machine learning
+ADD:Shimano wants to study Machine learning
+apply rule:LabRule1.1
+apply rule:LabRule1.2
+Success: Shimano wants to study Natural language processing
+ADD:Shimano wants to study Natural language processing
+apply rule:LabRule2
+apply rule:LabRule2.1
+apply rule:LabRule3
+apply rule:LabRule3.1
+apply rule:LabRule4
+apply rule:LabRule5
+apply rule:LabRule6
+apply rule:LabRule7
+apply rule:LabRule8
+apply rule:LabRule9
+apply rule:LabRule10
+apply rule:LabRule11
+apply rule:LabRule11.1
+apply rule:LabRule12
+apply rule:LabRule13
+apply rule:LabRule14
+apply rule:LabRule15
+apply rule:LabRule16
+apply rule:LabRule17
+apply rule:LabRule18
+apply rule:LabRule19
+apply rule:LabRule20
+apply rule:LabRule21
+apply rule:LabRule22
+Success: Shintani(Ozono)-Lab is recommended for Shimano
+ADD:Shintani(Ozono)-Lab is recommended for Shimano
+apply rule:LabRule23
+apply rule:LabRule24
+Success: Itou(taka)-Lab is recommended for Shimano
+ADD:Itou(taka)-Lab is recommended for Shimano
+apply rule:LabRule25
+Success: Katou-Lab is recommended for Shimano
+ADD:Katou-Lab is recommended for Shimano
+apply rule:LabRule26
+apply rule:LabRule27
+apply rule:LabRule28
+apply rule:LabRule28.1
+apply rule:LabRule28.2
+apply rule:LabRule28.3
+apply rule:LabRule29
+apply rule:LabRule30
+apply rule:LabRule31
+apply rule:LabRule32
+apply rule:LabRule33
+apply rule:LabRule34
+apply rule:LabRule35
+apply rule:LabRule36
+Success: Ishibashi-Lab is recommended for Shimano
+ADD:Ishibashi-Lab is recommended for Shimano
+Working Memory[Shimano wants to study AI, Shimano wants to study Robot, Shimano wants to study Multi agent, Shimano wants to study Machine learning, Shimano wants to study Natural language processing, Shintani(Ozono)-Lab is recommended for Shimano, Itou(taka)-Lab is recommended for Shimano, Katou-Lab is recommended for Shimano, Ishibashi-Lab is recommended for Shimano]
+apply rule:LabRule1
+apply rule:LabRule1.1
+apply rule:LabRule1.2
+apply rule:LabRule2
+apply rule:LabRule2.1
+apply rule:LabRule3
+apply rule:LabRule3.1
+apply rule:LabRule4
+apply rule:LabRule5
+apply rule:LabRule6
+apply rule:LabRule7
+apply rule:LabRule8
+apply rule:LabRule9
+apply rule:LabRule10
+apply rule:LabRule11
+apply rule:LabRule11.1
+apply rule:LabRule12
+apply rule:LabRule13
+apply rule:LabRule14
+apply rule:LabRule15
+apply rule:LabRule16
+apply rule:LabRule17
+apply rule:LabRule18
+apply rule:LabRule19
+apply rule:LabRule20
+apply rule:LabRule21
+apply rule:LabRule22
+apply rule:LabRule23
+apply rule:LabRule24
+apply rule:LabRule25
+apply rule:LabRule26
+apply rule:LabRule27
+apply rule:LabRule28
+apply rule:LabRule28.1
+apply rule:LabRule28.2
+apply rule:LabRule28.3
+apply rule:LabRule29
+apply rule:LabRule30
+apply rule:LabRule31
+apply rule:LabRule32
+apply rule:LabRule33
+apply rule:LabRule34
+apply rule:LabRule35
+apply rule:LabRule36
+Working Memory[Shimano wants to study AI, Shimano wants to study Robot, Shimano wants to study Multi agent, Shimano wants to study Machine learning, Shimano wants to study Natural language processing, Shintani(Ozono)-Lab is recommended for Shimano, Itou(taka)-Lab is recommended for Shimano, Katou-Lab is recommended for Shimano, Ishibashi-Lab is recommended for Shimano]
+No rule produces a new assertion
+質問文を1行づつ入力してください。
+例:?x is a ?y
+すべての質問文を入力したらexitを入力してください。
+->?x is recommended for Shimano
+質問文を1行づつ入力してください。
+例:?x is a ?y
+すべての質問文を入力したらexitを入力してください。
+->exit
+Query[?x is recommended for Shimano]
+Answer[{?x=Shintani(Ozono)-Lab}, {?x=Itou(taka)-Lab}, {?x=Katou-Lab}, {?x=Ishibashi-Lab}]
+</pre>
+</div>
+<!--// 折り畳まれ部分 -->
+
+<h2>課題6-2(後ろ向き推論)</h2>
+
+CarShop.data , AnimalWorld.data 等のデータファイルを実際的な応用事例に書き換えて，前向き推論，および後ろ向き推論に基づく質問応答システムを作成せよ．<br>
+どのような応用事例を扱うかは，メンバーで話し合って決めること．<br>
+なお，ユーザの質問は英語や日本語のような自然言語が望ましいが，難しければ変数を含むパターン等でも構わない．<br>
+
+<h3>独自仕様の説明</h3>
+<p>
+課題に加えて，以下の二点を独自仕様として組み込んだ<br>
+<ol>
+ <li>ルールファイル名を入力したときにワーキングメモリのファイルも自動的に読み込む設定とした。
+ <li>GUIを実装する人が実装しやすいように処理をある程度のメソッド化した
+</ol>
+ 1.に関して，ユーザーがルールファイル名を入力すると、そのワーキングメモリファイルも読み込む仕様とした。 ただし、ワーキングメモリのファイル名が"ルールファイル名Wm"となっていなければ読み込めない。<br>
+ 2.に関しては，GUI実装担当が実装をしやすいように処理をメソッドでまとめた。 <br>
+</p>
+<h3>プログラムの構造</h3>
+
+<h4>クラスRuleBaseSystem</h4>
+<p>
+メインクラス
+</p>
+<ul>
+	<li>main
+	<p>
+	ルールベースファイル、アサーションファイルの読み込みを行う。<br>
+	ルールベースファイルの文章からルールの形式として読み込む。<br>
+	</p>
+
+	<li>filereader
+	<p>
+	fileNameWm.dataを自動的に読み込む。
+	</p>
+
+	<li>rulereader
+	<p>
+	質問文の入力の処理をする。
+	</p>
+
+	<li>GuiSetUp
+	<p>
+	Gui用に変数の初期化を行う。
+	</p>
+
+	<li>readfileWm
+	<p>
+	Gui用<br>
+	アサーションファイルを読み込む
+	</p>
+
+	<li>getAnswer
+	<p>
+	Gui用<br>
+	質疑応答の解を返す。
+	</p>
+
+	<li>getChainPath
+	<p>
+	Gui用<br>
+	推論過程を返す。
+	</p>
+
+	<li>exe
+	<p>
+	Gui用<br>
+	後ろ向き推論実行メソッド。
+	</p>
+	<br>
+</ul>
+<h4>クラスRuleBase</h4>
+<p>
+ルールを表すクラス
+</p>
+<ul>
+	<li>RuleBase
+	<p>
+	変数にルールとワーキングメモリを格納する。
+	</p>
+
+	<li>setWm
+	<p>
+	変数にワーキングメモリを格納する。
+	</p>
+
+	<li>setRules
+	<p>
+	変数にルールを格納する。
+	</p>
+
+	<li>backwardChain
+	<p>
+	後ろ向き推論を行う。
+	</p>
+
+	<li>solution
+	<p>
+	質疑応答のの解を返す。
+	</p>
+
+	<li>chain_path
+	<p>
+	推論過程を返す。
+	</p>
+
+	<li>matchingPatterns
+	<p>
+	マッチするワーキングメモリのアサーションとルールの後件に対するバインディング情報を返す。
+	</p>
+
+	<li>matchingPatternOne
+	<p>
+	ユニフィケーションの結果によって処理を行う。
+	</p>
+
+	<li>rename
+	<p>
+	与えられたルールの変数をリネームしたルールのコピーを返す。
+	</p>
+
+	<li>instantiate
+	<p>
+	変数を具体化する。
+	</p>
+
+	<li>var
+	<p>
+	変数かどうかを確かめる。
+	</p>
+</ul>
+<br>
+<h4>クラスFileManager</h4>
+<p>
+ファイルを扱うクラス
+</p>
+<ul>
+	<li>loadRules
+	<p>
+	ルールベースファイルからルールの形式で読み取る。
+	</p>
+
+	<li>loadWm
+	<p>
+	アサーションファイルを読み取る。
+	</p>
+</ul>
+<br>
+<h4>クラスRule</h4>
+<p>
+ルールを表すクラス。<br>
+前向き推論のクラスRuleとほぼ同様。
+</p>
+<ul>
+	<li>getRenamedRule
+	<p>
+	ルール変数をリネーミングする。
+	</p>
+
+	<li>getVars
+	<p>
+	ルールの前件、後件から変数を取り出す。
+	</p>
+
+	<li>makeRenamedVarsTable
+	<p>
+	新しいルール変数を生成し、ルール変数の対応関係をハッシュテーブルに格納する。
+	</p>
+
+	<li>renameVars
+	<p>
+	文字列の中の変数をrenamedVarsTableをもとに書き換える。
+	</p>
+</ul>
+<br>
+<h4>クラスUnifer</h4>
+<p>
+ユニフィケーションを扱うクラス
+</p>
+<ul>
+	<li>unify(3変数)
+	<p>
+	初期束縛変数をもつユニフィケーションを行う。失敗したとき束縛変数を初期値に戻す。
+	</p>
+
+	<li>unify(2変数)
+	<p>
+	ユニフィケーションを行う。
+	</p>
+
+	<li>tokenMatching
+	<p>
+	トークンのマッチングを行う
+	</p>
+
+	<li>varMatching
+	<p>
+	変数のトークンのマッチングを行う
+	</p>
+
+	<li>replaceBuffer
+	<p>
+	配列中に存在する同じ名前の変数をすべて定数に置き換える。
+	</p>
+
+	<li>replaceBindings
+	<p>
+	変数をキーとして変数がハッシュテーブルに格納されていた場合、変数の具体化をすべての変数に適用する。
+	</p>
+
+	<li>var
+	<p>
+	与えられたトークンが変数であるかを調べる。
+	</p>
+</ul>
+
+<h3>実装の説明</h3>
+ルールベースファイルに対応したアサーションファイルを自動的に読み込むメソッドfilereaderを追加した。<br>
+質問文をコンソールから読み込むメソッドrulereaderを追加した。<br>
+課題6-3用にGuiで用いるメソッドGuiSetUp,readfileWm,getAnswer,getChainPath,exeを作成した。<br>
+詳細は<a href="../../../../ckb15074/workspace/kprep/rep6/index.html">担当者のレポート</a>
+
+<h3>実行例</h3>
+以下に卒研配属に関する事例の前向き推論による質疑応答システムの例を示す。
+<!-- 折り畳み展開ポインタ -->
+<div onclick="obj=document.getElementById('open2').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="cursor:pointer;">ワーキングメモリに登録したアサーション  ▼ クリックで展開</a>
+</div>
+<!--// 折り畳み展開ポインタ -->
+ 
+<!-- 折り畳まれ部分 -->
+<div id="open2" style="display:none;clear:both;">
+
+<!--ここの部分が折りたたまれる＆展開される部分になります。
+自由に記述してください。-->
+<PRE>
+Kodai wants to study AI
+Ryota wants to study AI
+Kenta wants to study AI
+Daisuke wants to study AI
+Tomomichi wants to study AI
+</PRE>
+</div>
+<!--// 折り畳まれ部分 -->
+<!-- 折り畳み展開ポインタ -->
+<div onclick="obj=document.getElementById('open3').style; obj.display=(obj.display=='none')?'block':'none';">
+<a style="cursor:pointer;">実行例  ▼ クリックで展開</a>
+</div>
+<!--// 折り畳み展開ポインタ -->
+ 
+<!-- 折り畳まれ部分 -->
+<div id="open3" style="display:none;clear:both;">
+
+<!--ここの部分が折りたたまれる＆展開される部分になります。
+自由に記述してください。-->
+
+<PRE>
+ルールファイル名を入力してください
+例:CarShop.data
+sotuken.data
+質問文を入力してください
+例:?x is an Accord Wagon,?x is a Honda
+?x is recommended for Kodai,?y is recommended for Ryota
+Hypothesis:[?x is recommended for Kodai, ?y is recommended for Ryota]
+Success RULE
+Rule:LabRule4 [?x7 wants to study Robot, ?x7 wants to study Image information processing]->Nakamura-Lab is recommended for ?x7 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule2.1 [?x12 wants to study Hardware]->?x12 wants to study Robot <=> ?x7 wants to study Robot
+tmpPoint: -1
+Success RULE
+Rule:LabRule5 [?x96 wants to study Data mining, ?x96 wants to study Logic]->Inuzuka-Lab is recommended for ?x96 <=> ?x is recommended for Kodai
+tmpPoint: -1
+Success RULE
+Rule:LabRule6 [?x141 wants to study Algorithm, ?x141 wants to study AI]->Moriyama-Lab is recommended for ?x141 <=> ?x is recommended for Kodai
+tmpPoint: -1
+Success RULE
+Rule:LabRule7 [?x186 wants to study Image information processing]->Hontani-Lab is recommended for ?x186 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule3 [?x192 wants to study Media]->?x192 wants to study Image information processing <=> ?x186 wants to study Image information processing
+Success RULE
+Rule:LabRule8 [?x275 wants to study Media, ?x275 wants to study Robot]->Umezaki-Lab is recommended for ?x275 <=> ?x is recommended for Kodai
+tmpPoint: -1
+Success RULE
+Rule:LabRule9 [?x320 wants to study Image information processing]->Satou-Lab is recommended for ?x320 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule3 [?x326 wants to study Media]->?x326 wants to study Image information processing <=> ?x320 wants to study Image information processing
+Success RULE
+Rule:LabRule10 [?x409 wants to study Speech information processing]->Tokuda-Lab is recommended for ?x409 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule3.1 [?x416 wants to study Media]->?x416 wants to study Speech information processing <=> ?x409 wants to study Speech information processing
+Success RULE
+Rule:LabRule11 [?x498 wants to study Speech information processing]->Tokuda-Lab is recommended for ?x498 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule3.1 [?x505 wants to study Media]->?x505 wants to study Speech information processing <=> ?x498 wants to study Speech information processing
+Success RULE
+Rule:LabRule11.1 [?x587 wants to study Speech information processing]->Ri-Lab is recommended for ?x587 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule3.1 [?x594 wants to study Media]->?x594 wants to study Speech information processing <=> ?x587 wants to study Speech information processing
+Success RULE
+Rule:LabRule12 [?x676 wants to study others]->Oda-Lab is recommended for ?x676 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule13 [?x721 wants to study Image information processing]->Hunahasi-Lab is recommended for ?x721 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule3 [?x727 wants to study Media]->?x727 wants to study Image information processing <=> ?x721 wants to study Image information processing
+Success RULE
+Rule:LabRule14 [?x810 wants to study Algorithm, ?x810 wants to study distributed system]->Katayama-Lab is recommended for ?x810 <=> ?x is recommended for Kodai
+tmpPoint: -1
+Success RULE
+Rule:LabRule15 [?x855 wants to study Security]->Saitou-Lab is recommended for ?x855 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule16 [?x900 wants to study Natural language processing, ?x900 wants to study Logic]->Wadayama-Lab is recommended for ?x900 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule1.2 [?x903 wants to study AI]->?x903 wants to study Natural language processing <=> ?x900 wants to study Natural language processing
+Success WM
+Kodai wants to study AI <=> ?x903 wants to study AI
+tmpPoint: 8
+Success:?x900 wants to study Natural language processing
+tmpPoint: -1
+Success RULE
+Rule:LabRule17 [?x984 wants to study Algorithm, ?x984 wants to study distributed system, ?x984 wants to study Robot]->Izumi-Lab is recommended for ?x984 <=> ?x is recommended for Kodai
+tmpPoint: -1
+Success RULE
+Rule:LabRule18 [?x1029 wants to study Network]->Itou(yoshi)-Lab is recommended for ?x1029 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule19 [?x1074 wants to study GPS]->Uchiya(takumi)-Lab is recommended for ?x1074 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule20 [?x1119 wants to study Secrity, ?x1119 wants to study AI, ?x1119 wants to study Multi agent]->Uchiya-Lab is recommended for ?x1119 <=> ?x is recommended for Kodai
+tmpPoint: -1
+Success RULE
+Rule:LabRule21 [?x1164 wants to study Hardware]->Tumura-Lab is recommended for ?x1164 <=> ?x is recommended for Kodai
+Success RULE
+Rule:LabRule22 [?x1209 wants to study AI]->Shintani(Ozono)-Lab is recommended for ?x1209 <=> ?x is recommended for Kodai
+Success WM
+Kodai wants to study AI <=> ?x1209 wants to study AI
+tmpPoint: 32
+Success:?x is recommended for Kodai
+Success RULE
+Rule:LabRule4 [?x1217 wants to study Robot, ?x1217 wants to study Image information processing]->Nakamura-Lab is recommended for ?x1217 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule2.1 [?x1222 wants to study Hardware]->?x1222 wants to study Robot <=> ?x1217 wants to study Robot
+tmpPoint: -1
+Success RULE
+Rule:LabRule5 [?x1306 wants to study Data mining, ?x1306 wants to study Logic]->Inuzuka-Lab is recommended for ?x1306 <=> ?y is recommended for Ryota
+tmpPoint: -1
+Success RULE
+Rule:LabRule6 [?x1351 wants to study Algorithm, ?x1351 wants to study AI]->Moriyama-Lab is recommended for ?x1351 <=> ?y is recommended for Ryota
+tmpPoint: -1
+Success RULE
+Rule:LabRule7 [?x1396 wants to study Image information processing]->Hontani-Lab is recommended for ?x1396 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule3 [?x1402 wants to study Media]->?x1402 wants to study Image information processing <=> ?x1396 wants to study Image information processing
+Success RULE
+Rule:LabRule8 [?x1485 wants to study Media, ?x1485 wants to study Robot]->Umezaki-Lab is recommended for ?x1485 <=> ?y is recommended for Ryota
+tmpPoint: -1
+Success RULE
+Rule:LabRule9 [?x1530 wants to study Image information processing]->Satou-Lab is recommended for ?x1530 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule3 [?x1536 wants to study Media]->?x1536 wants to study Image information processing <=> ?x1530 wants to study Image information processing
+Success RULE
+Rule:LabRule10 [?x1619 wants to study Speech information processing]->Tokuda-Lab is recommended for ?x1619 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule3.1 [?x1626 wants to study Media]->?x1626 wants to study Speech information processing <=> ?x1619 wants to study Speech information processing
+Success RULE
+Rule:LabRule11 [?x1708 wants to study Speech information processing]->Tokuda-Lab is recommended for ?x1708 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule3.1 [?x1715 wants to study Media]->?x1715 wants to study Speech information processing <=> ?x1708 wants to study Speech information processing
+Success RULE
+Rule:LabRule11.1 [?x1797 wants to study Speech information processing]->Ri-Lab is recommended for ?x1797 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule3.1 [?x1804 wants to study Media]->?x1804 wants to study Speech information processing <=> ?x1797 wants to study Speech information processing
+Success RULE
+Rule:LabRule12 [?x1886 wants to study others]->Oda-Lab is recommended for ?x1886 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule13 [?x1931 wants to study Image information processing]->Hunahasi-Lab is recommended for ?x1931 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule3 [?x1937 wants to study Media]->?x1937 wants to study Image information processing <=> ?x1931 wants to study Image information processing
+Success RULE
+Rule:LabRule14 [?x2020 wants to study Algorithm, ?x2020 wants to study distributed system]->Katayama-Lab is recommended for ?x2020 <=> ?y is recommended for Ryota
+tmpPoint: -1
+Success RULE
+Rule:LabRule15 [?x2065 wants to study Security]->Saitou-Lab is recommended for ?x2065 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule16 [?x2110 wants to study Natural language processing, ?x2110 wants to study Logic]->Wadayama-Lab is recommended for ?x2110 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule1.2 [?x2113 wants to study AI]->?x2113 wants to study Natural language processing <=> ?x2110 wants to study Natural language processing
+Success WM
+Ryota wants to study AI <=> ?x2113 wants to study AI
+tmpPoint: 8
+Success:?x2110 wants to study Natural language processing
+tmpPoint: -1
+Success RULE
+Rule:LabRule17 [?x2194 wants to study Algorithm, ?x2194 wants to study distributed system, ?x2194 wants to study Robot]->Izumi-Lab is recommended for ?x2194 <=> ?y is recommended for Ryota
+tmpPoint: -1
+Success RULE
+Rule:LabRule18 [?x2239 wants to study Network]->Itou(yoshi)-Lab is recommended for ?x2239 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule19 [?x2284 wants to study GPS]->Uchiya(takumi)-Lab is recommended for ?x2284 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule20 [?x2329 wants to study Secrity, ?x2329 wants to study AI, ?x2329 wants to study Multi agent]->Uchiya-Lab is recommended for ?x2329 <=> ?y is recommended for Ryota
+tmpPoint: -1
+Success RULE
+Rule:LabRule21 [?x2374 wants to study Hardware]->Tumura-Lab is recommended for ?x2374 <=> ?y is recommended for Ryota
+Success RULE
+Rule:LabRule22 [?x2419 wants to study AI]->Shintani(Ozono)-Lab is recommended for ?x2419 <=> ?y is recommended for Ryota
+Success WM
+Ryota wants to study AI <=> ?x2419 wants to study AI
+Yes
+{?x1209=Kodai, ?x2419=Ryota, ?x=Shintani(Ozono)-Lab, ?y=Shintani(Ozono)-Lab}
+binding: {?x1209=Kodai, ?x2419=Ryota, ?x=Shintani(Ozono)-Lab, ?y=Shintani(Ozono)-Lab}
+tmp: ?x, result:  Shintani(Ozono)-Lab
+Query: ?x is recommended for Kodai
+Answer:Shintani(Ozono)-Lab is recommended for Kodai
+binding: {?x1209=Kodai, ?x2419=Ryota, ?x=Shintani(Ozono)-Lab, ?y=Shintani(Ozono)-Lab}
+tmp: ?y, result:  Shintani(Ozono)-Lab
+Query: ?y is recommended for Ryota
+Answer:Shintani(Ozono)-Lab is recommended for Ryota
+</PRE>
+</div>
+<!--// 折り畳まれ部分 -->
+<h2>課題6-3(前向き推論)</h2>
+上記6-2で実装した質疑応答システムのGUIを作成せよ。<br>
+質問に答える際の推論過程を可視化できることが望ましい。<br>
+
+<h3>プログラムの構造</h4>
+<p>
+課題6-2で作成した質疑応答システムのプログラムに追加、変更することで実装した。<br>
+追加部分の説明を行う。<br>
+</p>
+
+<h4>クラスLaterFrame</h4>
+<p>
+過程用フレームを扱うクラス。
+</p>
+<ul>
+	<li>LaterFrame
+	<p>
+	過程用のフレームを作成する。
+	</p>
+</ul>
+<br>
+<h4>クラスDoFrame</h4>
+<p>
+実行用のフレームを扱うクラス
+</p>
+<ul>
+	<li>DoFrame
+	<p>
+	実行用のフレームを作成する。
+	</p>
+
+	<li>actionPerformed
+	<p>
+	入力に対する処理を行う。
+	</p>
+</ul>
+<br>
+<h4>クラスDeleteFrame</h4>
+<p>
+ルール削除用のフレームを扱うクラス
+</p>
+<ul>
+	<li>DeleteFrame
+	<p>
+	ルール削除用のフレームを作成する。
+	</p>
+
+	<li>actionPerformed
+	<p>
+	入力に対する処理を行う。
+	</p>
+</ul>
+<br>
+<h4>クラスAddFrame</h4>
+<p>
+ルールの追加を行うフレームを扱うクラス
+</p>
+<ul>
+	<li>AddFrame
+	<p>
+	ルールを追加するフレームを作成する。
+	</p>
+
+	<li>actionPerformed
+	<p>
+	入力に対する処理を行う。
+	</p>
+</ul>
+<br>
+<h4>クラスPrefFrame</h4>
+<p>
+メインのフレームを扱うクラス
+</p>
+<ul>
+	<li>PreFrame
+	<p>
+	メインのフレームを作成する。
+	</p>
+
+	<li>actionPerformed
+	<p>
+	入力に対する処理を行う。
+	</p>
+</ul>
+<br>
+<h4>クラスRuleBaseSystem</h4>
+<p>
+メインクラス
+</p>
+<ul>
+	<li>write_text
+	<p>
+	ファイルに分を出力する。
+	</p>
+
+	<li>delete_text
+	<p>
+	ファイルの中身をリセットする。
+	</p>
+
+	<li>checkBifoerWritefile
+	<p>
+	ファイルが書き込む可能か確かめる。
+	</p>
+
+	<li>text_n
+	<p>
+	テキストファイルの内容の行数を確認する。
+	</p>
+
+	<li>String_n
+	<p>
+	データが格納されている配列の数を数える。
+	</p>
+
+	<li>read_text
+	<p>
+	ファイルの文字を列ごとにString型配列に格納する。
+	</p>
+
+	<li>matchList
+	<p>
+	指定した文字から始まる文字列をデータから取り出し、配列に格納する。
+	</p>
+
+	<li>answer
+	<p>
+	ワーキングメモリから最後の文字列を取り出す。
+	</p>
+
+	<li>printGUI
+	<p>
+	アサーションやルール一覧をGUIに表示する。
+	</p>
+
+	<li>printPath
+	<p>
+	推論過程をGUIに表示する。
+	</p>
+</ul>
+
+<h3>実装の説明</h3>
+doボタンを押した場合は通常実行を行うためのDoFrameを呼び出し、ルールファイル、アサーション、質問文(クエリー)の入力を行う。<br>
+質問の解はDoFrame内に表示させる。<br>
+printボタンを押した場合はアサーション一覧,ルール一覧,また探索までの大雑把な経路を別フレームであるLaterFrameを表示する。<br>
+詳細は<a href="../../../../ckb15070/workspace/kprep/rep6/index.html">担当者のレポート</a>
+<h3>実行例</h3>
+<img src="./ForwardChain1.png">
+<img src="./ForwardChain2.png">
+<img src="./ForwardChain3.png">
+
+<h2>課題6-3(後ろ向き推論)</h2>
+上記6-2で実装した質疑応答システムのGUIを作成せよ。<br>
+質問に答える際の推論過程を可視化できることが望ましい。<br>
+
+<h3>プログラムの構造</h4>
+<h4>クラスSample</h4>
+<p>
+メインクラス
+</p>
+<ul>
+	<li>main
+	<p>
+	メインメソッド
+	フレームのインスタンスを生成する。
+	</p>
+
+	<li>sample
+	<p>
+	コンストラクタ。<br>
+	ウインドウ、メニューバー、query用のpanel、answer用のpanel、各ボタンを生成する。<br>
+	query用panel,answer用のpanel,各ボタンを応答システム用パネルに配置する。
+	</p>
+
+	<li>actionPerformed
+	<p>
+	入力に対する処理を行う。
+	</p>
+
+	<li>checkBeforeReadfile
+	<p>
+	ファイルが読み込み可能か確かめる。
+	</p>
+</ul>
+<br>
+<h4>クラスChain</h4>
+<p>
+推移表示用ウィンドウを扱うクラス
+</p>
+<ul>
+	<li>Chain
+	<p>
+	コンストラクタ。<br>
+	推論過程表示用のウィンドウを生成する。
+	</p>
+
+	<li>setText
+	<p>
+	テキストエリアに文章を設定する。
+	</p>
+</ul>
+<br>
+<h4>クラスWmadd</h4>
+<p>
+wmの編集を行うウィンドウを扱うクラス
+</p>
+<ul>
+	<li>Wmadd
+	<p>
+	コンストラクタ。<br>
+	wm編集用ウィンドウを生成する。
+	</p>
+
+	<li>showWm
+	<p>
+	ワーキングメモリの内容を文字列としてテキストエリアに設定する。
+	</p>
+
+	<li>setText
+	<p>
+	テキストエリアに文字列を設定する。
+	</p>
+
+	<li>getWm
+	<p>
+	ワーキングメモリを返す。
+	</p>
+
+	<li>actionPerformed
+	<p>
+	入力に対する処理を行う。
+	</p>
+</ul>
+
+<h3>実装の説明</h3>
+推論過程ボタンが押された場合は、推論過程のウィンドウを可視化する。<br>
+wm編集が押された場合は、ワーキングメモリがArrayListになっているため、 TextAreaにStringにして追加し、ウィンドウを可視化する。<br>
+file読み込みが押された場合は、JFileChooserによりファイルの選択を行い、 正常にファイル読み込みが出来た場合はフラグを立てる。<br>
+Wmfile読み込みが押された場合は、file読み込み同様にファイル読み込みを行い、 RuleBaseSystemクラスのreadfileWmメソッドを用いて読み込んだファイルから ArryaList型のワーキングメモリを返し、GUI内のワーキングメモリにセットする。<br>
+詳細は<a href="../../../../ckb15069/workspace/kprep/rep6/index.html">担当者のレポート</a>
+<h3>実行例</h3>
+<img src="./BackwardGUI1.png">
+<img src="./BackwardGUI2.png">
+<img src="./BackwardGUI3.png">
+
+
+<h2>発展課題6-4(前向き推論)</h2>
+上記6-3で実装したGUIを発展させ、質問応答だけでなく、ルールの編集(追加、削除、変更)などについてもGUIで行えるようにせよ。<br>
+
+<h3>独自仕様の説明</h3>
+課題に加えて，以下を独自仕様として組み込んだ．<br>
+<oi>
+<li>ルールの一括削除
+ルールの削除をif内の項目,then内の項目ごとに削除できる仕様にすると,例えば"CarRuleA"の項目があるのにその中身がないとなった場合実行時にエラーが起こることがあり得るので,そうならないようにルール名を入力したらルールの中身も全て削除される仕様とした。<br>
+<li>同一ルールの検出
+ルールを追加するとき,例えば"CarRuleB"が存在するのに"CarRuleB"を追加しようとしたときは,ルール内の内容を入力していてもそのルールを書き込めない仕様としている。<br>
+これの理由はプログラム上のバグを抑えるよりも探索過程に間違いが生じないようにするためである。<br>
+</oi>
+
+<h3>プログラムの構造</h3>
+課題6-3で実装した前向き推論の質問応答システムのGUIのプログラムにルールの編集をするためのプログラムを追加した。<br>
+追加部分に対する説明をする。<br>
+
+<h4>クラスRuleBaseSystem</h4>
+<p>
+課題6-3のクラスと同様
+</p>
+<ul>
+	<li>delete_rule
+	<p>
+	ルールの削除を行う。
+	</p>
+
+	<li>add_rule
+	<p>
+	ルールの追加を行う。
+	</p>
+</ul>
+
+<h3>実装の説明</h3>
+<p>
+今回実装したのはルール削除用GUIフレームの表示とそれに対応するボタンの作成とルール追加用GUIフレーム操作の表示とそれに対応するボタンの作成,及びルール削除用GUIフレーム,ルール追加用GUIフレームから必要な情報を入力して処理を実行する部分である。<br>
+詳細は<a href="../../../../ckb15070/workspace/kprep/rep6/index.html">担当者のレポート</a>
+</p>
+<h3>実行例</h3>
+<img src="./ForwardChain4.png">
+<img src="./ForwardChain5.png">
+
+<h2>考察</h2>
+<!--
+ 考察を書く．PNGやGIF等の絵を張っても良い．
+ 例: 自分で工夫して解決した点，その解決手法，なぜそうしたのか，その手法の素晴らしさ，上手くいかなかった点，なぜ上手くいかなかったのか，など．
+ 例: 今回はできなかったが，更に?の機能を追加すべきである．なぜなら，...
+-->
+<p>
+今回課題6−3の担当者が6−2の担当者の作成したプログラムを元にGUIを作成しようとした。しかし参考にするプログラムを誤ってしまったので、課題を進行する妨げになった。<br> 
+この点からgithubの利用の改善点が考えられる。個人の担当する課題に対するbranchを用意して、最新版や動作安定版の保存する場所をメンバーに告知しておく。<br>
+こうすることでメンバーがどのソースを用いれば良いかすぐに分かり、今回のような問題を防ぐことが出来る。<br>
+課題6−3で要求される前向き推論、後ろ向き推論のGUIは機能として同じものである。<br>
+課題6−3は二人のメンバーで担当したが、二人は個別でGUIを作成したため統一性のないGUIになってしまった。<br>
+利用する人の事を考えるなら同じ形式に統一するということは重要なことであるので、その点についても考慮していけたらいいと考える。<br>
+課題の割り振りは課題の困難さを事前にグループで話し合い、割り振りの人数などを考慮することが出来た。
+つぎは同じ課題を担当する人たちの中でどのように実装すれば効率よく課題をこなせるかの議論をするなどの改善点が上げられる。
+</p>
+
+
+<hr>
+
+
+<h2>感想</h2>
+<!-- 感想を書く．-->
+<!-- 例: ?が面白かった，?がわからなかった，?を作ってみたい，講義・演習に関する要望，など．-->
+<p>
+  課題の分担は行えていたが、今回の課題は分担が簡単な部類であった。<br>
+次回の課題は同じ課題を複数人で担当する場合、その中での作業の分担が難しくなると考えられるので、プログラムを作成し始めるまえにメンバーで話し合いを行い作業量に大きな差が出ない様に注意したい。<br> 
+作業を分担するということのメリット(一人一人の作業量の削減など）を生かしつつ、デメリット(作業の分担と統合におけるオーバーヘッド)を減らせるように、上手にグループ作業をこなしていきたい。<br>
+</p>
+
+
+<h2>参考文献</h2>
+<!-- 参考文献を書く．助けてもらった人がいれば，それも書く-->
+
+<ul>
+  <li><a href="http://www.javadrive.jp/tutorial/">Swingを使ってみよう - Java GUIプログラミング</a></li>
+  <li>新谷虎松 著（2011）『改訂 Java による知能プログラミング入門』コロナ社</li>
+</ul>
+
+</body>
+</html>
