@@ -1,4 +1,3 @@
-package ForePacd;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
@@ -34,7 +33,8 @@ class LaterFrame extends JFrame{
 
 	static String sample5 ="";
     JPanel p = new JPanel();
-
+    JTextArea text1 = new JTextArea(sample5);
+    JScrollPane s_text1 = new JScrollPane(text1);
     JLabel label5 = new JLabel(sample5);
     public LaterFrame(String title) {
       //フレームのタイトル
@@ -48,12 +48,14 @@ class LaterFrame extends JFrame{
       label5.setFont(new Font("ＭＳ ゴシック", Font.BOLD, 20));
       label5.setOpaque(true);
       label5.setBounds(0, 0, 500,700 );
+      s_text1.setBounds(0,0,280,480);
 
 
-
-      p.add(label5);
+      //p.add(label5);
       label5.setText(sample5);
-
+      p.add(s_text1);
+      label5.setText(sample5);
+      
       Container contentPane = getContentPane();
       contentPane.add(p, BorderLayout.CENTER);
     }
@@ -317,7 +319,7 @@ class PrefFrame extends JFrame implements ActionListener{
             RuleBaseSystem.printPath();
             LaterFrame frm2 = new LaterFrame("過程表示");
             frm2.setLocation(890, 0); //表示位置
-            frm2.setSize(480, 700); //表示サイズ
+            frm2.setSize(300, 500); //表示サイズ
             frm2.setVisible(true);
         }else if (ae.getSource() == b3) {
         	sample4 ="削除モード";
@@ -495,44 +497,55 @@ public class RuleBaseSystem {
         int arc_n = text_n("test.txt");
         //現状ここがCarRuleでしか使えない
         //要変更ポイント///////////////////////////////////
-        String CRList[] = matchList(archive,"Car");
         String ADDList[] = matchList(archive,"ADD");
-
-        int CRL_n = String_n(CRList);
+        
+     if(DoFrame.enter1.equals("CarShop.data")){
+        String Ruleist[] = matchList(archive,"Car");
+        int CRL_n = String_n(Ruleist);
         int ADDL_n = String_n(ADDList);
         PrefFrame.sample3 = "ルール一覧\n";
        for(int i=0;i<CRL_n;i++)
-        PrefFrame.sample3 = PrefFrame.sample3 +CRList[i] +  "\n";
-
+        PrefFrame.sample3 = PrefFrame.sample3 +Ruleist[i] +  "\n";
        PrefFrame.sample2 = "アサーション一覧\n";
        for(int i=0;i<ADDL_n;i++)
         PrefFrame.sample2 = PrefFrame.sample2 +ADDList[i] +  "\n";
-
        String a =answer(archive,arc_n);
        PrefFrame.sample1 = "A."+a;
+     }else if(DoFrame.enter1.equals("sotuken.data")){
+     	String Ruleist[] = matchList(archive,"Lab");
+     	int CRL_n = String_n(Ruleist);
+       int ADDL_n = String_n(ADDList);
+       PrefFrame.sample3 = "ルール一覧\n";
+       for(int i=0;i<CRL_n;i++)
+       PrefFrame.sample3 = PrefFrame.sample3 +Ruleist[i] +  "\n";
+       PrefFrame.sample2 = "アサーション一覧\n";
+       for(int i=0;i<ADDL_n;i++)
+        PrefFrame.sample2 = PrefFrame.sample2 +ADDList[i] +  "\n";
+       String a =answer(archive,arc_n);
+       PrefFrame.sample1 = "A."+a;
+      }
     }
 //過程をGUIに表示する
     public static void printPath(){
     String archive[] = read_text("test.txt");
     int arc_n = text_n("test.txt");
     boolean search =false;
-
-    LaterFrame.sample5 = "<html>";
+    LaterFrame.sample5 ="";
     for(int i=0;i<arc_n;i++){
     	String check = archive[i].substring(0, 3);
     	if(check.equals("ADD")){
-    	LaterFrame.sample5 =LaterFrame.sample5+archive[i]+"<br>";
+    	LaterFrame.sample5 =LaterFrame.sample5+archive[i]+"\n";
     	}else if(check.equals("Suc")){
-    		LaterFrame.sample5 =LaterFrame.sample5+archive[i-1]+"<br>";
-    		LaterFrame.sample5 =LaterFrame.sample5+"上記のルールが適応された！！<br>";
+    		LaterFrame.sample5 =LaterFrame.sample5+archive[i-1]+"\n";
+    		LaterFrame.sample5 =LaterFrame.sample5+"上記のルールが適応された！！\n";
     	}else if(check.equals("Wor")){
-    		LaterFrame.sample5 =LaterFrame.sample5+"探索が一巡した<br>";
+    		LaterFrame.sample5 =LaterFrame.sample5+"探索が一巡した\n";
     	}else if(check.equals("No ")){
-    	 LaterFrame.sample5 = LaterFrame.sample5+"探索終了<html>";
+    	 LaterFrame.sample5 = LaterFrame.sample5+"探索終了\n";
     	}else if(check.equals("app")){
         	String before = archive[i-1].substring(0, 3);
         	if(before.equals("app")||before.equals("ADD")){}else{
-        		LaterFrame.sample5 = LaterFrame.sample5+"探索開始<br>";
+        		LaterFrame.sample5 = LaterFrame.sample5+"探索開始\n";
         	}
     	}
     }
@@ -566,6 +579,7 @@ public class RuleBaseSystem {
         PrefFrame.sample4 = DeleteFrame.delete_enter;
         System.out.println("以下のルールを検索します:"+ PrefFrame.sample4);
 
+       //int data_n = text_n(DoFrame.enter1);
     	int data_n = text_n("CarShop.data");
 		int check_s=0;
 		int check_n=0;
@@ -594,10 +608,12 @@ public class RuleBaseSystem {
 		}
 		int temp_n = data_n-check_n;
 
-        delete_text("CarShop.data");
-        for (int i=0;i<temp_n;i++){
-            write_text(temp[i],"CarShop.data"); //ファイル書き込み
-        }
+	    //delete_text(DoFrame.enter1);
+	    delete_text("CarShop.data");
+	    for (int i=0;i<temp_n;i++){
+	        write_text(temp[i],"CarShop.data"); //ファイル書き込み
+	        //write_text(temp[i],DoFrame.enter1); //ファイル書き込み
+	    }
     }
 //ルールの追加
     public static void add_rule(String[] data){
@@ -606,7 +622,8 @@ public class RuleBaseSystem {
         String rule1 = AddFrame.add_enter1;
         System.out.println("以下のルールを追加します: "+ AddFrame.add_enter1);
 
-    	int data_n = text_n("CarShop.data");
+       //int data_n = text_n(DoFrame.enter1);
+       int data_n = text_n("CarShop.data");
 		boolean check=true;
 		for(int i=0;i<data_n&&check;i++){
 			if(data[i].endsWith(rule1)){
@@ -649,6 +666,7 @@ public class RuleBaseSystem {
 		       temp[data_n+2+if_n]="then	"+rule3;
 		       int temp_n = data_n+3+if_n;
 
+		       //delete_text(DoFrame.enter1);
 		       delete_text("CarShop.data");
 		        for (int i=0;i<temp_n;i++){
 		            write_text(temp[i],"CarShop.data"); //ファイル書き込み
@@ -788,6 +806,12 @@ class RuleBase {
         	wm.addAssertion("my-car has several color models");
         	wm.addAssertion("my-car has several seats");
         	wm.addAssertion("my-car is a wagon");
+        }else if(fileName.equals("sotuken.data")){
+           wm.addAssertion("Tomomichi wants to study AI");
+           wm.addAssertion("Ryota wants to study AI");
+           wm.addAssertion("Kodai wants to study AI");
+           wm.addAssertion("Daisuke wants to study AI");
+           wm.addAssertion("Kenta wants to study AI");
         }
         	/*
     		System.out.println("追加するアサーションを入力してください。");
